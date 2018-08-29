@@ -1,0 +1,264 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 2 - The Logic of Compound Statements  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Logical form and logical equivalence}
+\subsection{Statements}
+A \textbf{statement} (or \textbf{proposition}) is a sentence that is true or false, but not both.
+\subsubsection{Compound statements}
+\textbf{Negation} - if $p$ is a statement variable, the negation of $p$ is "not $p$" and is denoted $\sim p$.\\
+\textbf{Conjunction} - if $p$ and $q$ are statement variables, the conjunction of $p$ and $q$ is "$p$ and $q$", denoted $p \land q$.\\
+\textbf{Disjunction} - if $p$ and $q$ are statement variables, the disjunction of $p$ and $q$ is "$p$ or $q$", denoted $p \lor q$.\\
+\subsubsection{Statement form}
+A \textbf{statement form} (or \textbf{propositional form}) is an expression made up of statement variables and logical connectives that becomes a statement when actual statement are substituted for the component statement variables.
+\subsection{Logical equivalence}
+Two statement forms are called \textbf{logically equivalent} if, and only if, they have identical truth values for each possible substitution of statements for their statement variables.\\ \\
+The logical equivalence of statement forms $P$ and $Q$ is denoted by $P \equiv Q$
+\subsubsection{Non-equivalence}
+To show that statement forms $P$ and $Q$ are \textit{not} logically equivalent, show that:
+\begin{enumerate}
+	\item At least one row in both their truth tables where their truth values differ, or
+	\item Find a counter example - concrete statements for both of the two forms, one of which is true and the other of which is false. 
+\end{enumerate}
+\subsection{Tautologies and Contradictions}
+A \textbf{tautology} is a statement form that is always true regardsless of the truth values of the individual statements substituted for its statement variables.\\
+A tautological statement is a statement whose form is a tautology.\\ \\
+A \textbf{contradiction} is a statement form that is always false regardless of the truth values of the individual statements substituted for its statement variables.\\
+A contradictory statement is a statement whose form is a contradiction.
+\section{Conditional statements}
+A conditional statement takes the form of "if $p$ then $q$", or $p \rightarrow q$.\\
+It is false when $p$ is true and $q$ is false; otherwise it is true.\\
+
+A conditional statement that is true simply because the hypothesis is false is called \textit{vacuously true}
+We call $p$ the hypothesis (or antecedent) of the conditional and $q$ the conclusion (or consequent).
+\subsection{Implication law}
+We may represent the conditional statement as an or statement:
+\begin{center}
+	$p \rightarrow q$ $\equiv$ $\sim p \lor q$
+\end{center}
+Both statement forms are logically equivalent, and this equivalence is known as the implication law.
+\subsection{Contrapositive}
+The contrapositive of a conditional statement of the form "if $p$ then $q$" is 
+\begin{center}
+	if $\sim q$ then $p$
+\end{center}
+Recall that a statement and its contrapositive are logically equivalent.
+
+Also, to say "$p$ \textit{only if} $q$" means that $p$ can take place only if $q$ takes place as well. It is logically equivalent to the statement form "if not $q$ then not $p$" and likewise "if $p$ then $q$".
+\subsection{Converse}
+The converse of a conditional statement of the form "if $p$ then $q$" is
+\begin{center}
+	if $q$ then $p$
+\end{center}
+\subsection{Inverse}
+The inverse of a conditional statement of the form "if $p$ then $q$" is
+\begin{center}
+	if $\sim p$ then $\sim q$
+\end{center}
+Note that given a conditional statement, its converse and inverse are logically equivalent, \textbf{but} the statement itself is not logically equivalent to both its converse or inverse.
+\subsection{Biconditional}
+Given two statement variables $p$ and $q$, the \textbf{biconditional} of $p$ and $q$ is "$p$ if, and only if, $q$" and is denoted $p \leftrightarrow q$. It is true if both $p$ and $q$ have the same truth values, and false if $p$ and $q$ have opposite truth values.\\
+\\The words \textit{if and only if} are sometimes abbreviated as \textit{iff}
+\subsection{Necessary and sufficient conditions}
+If $r$ and $s$ are statements,\\
+"$r$ is a sufficient condition for $s$" means "if $r$ then $s$"\\
+"$r$ is a necessary condition for $s$" means "if not $r$ then not $s$"
+\section{Valid and invalid arguments}
+An argument is a sequence of statements ending in a conclusion.\\
+All statements in an argument, except for the final one, are called \textbf{premises} (or \textbf{assumptions} or \textbf{hypothesis}). The final statement is called the \textbf{conclusion}.\\
+The symbol $\bullet$ is read as "therefore", and is normally placed just before the conclusion.\\ \\
+An argument form is called \textbf{valid} if, and only if, whenever statements are substituted that make all the premises true, the conclusion is also true.\\
+When an argument is valid and its premises are true, the truth of the conclusion is said to be \textbf{inferred} or \textbf{deduced} from the truth of the premises.
+\subsection{Determining validity}
+To test an argument form for validity:
+\begin{enumerate}
+	\item Identify the premises and conclusion of the argument form.
+	\item Construct a truth table showing the truth values of all the premises and the conclusion.
+	\item If there is a critical row (A row of the truth table in which all the premises are true) in which the conclusion is 
+	\subitem \textbf{true}, then the argument form is valid.
+	\subitem \textbf{false}, then the argument form is invalid.
+\end{enumerate}
+\subsection{Syllogism}
+A \textbf{Syllogism} is an argument form consisting of two premises and a conclusion.
+\subsubsection{Modus ponens}
+Modus ponens is a valid syllogism that takes the form:
+\begin{itemize}
+	\itemsep0em
+	\item[] if $p$ then $q$
+	\item[] $p$
+	\item[] $\bullet q$
+\end{itemize}
+\subsubsection{Modus Tollens}
+Likewise, modus tollens is a valid syllogism that takes the form:
+\begin{itemize}
+	\itemsep0em
+	\item[] if $p$ then $q$
+	\item[] $\sim q$
+	\item[] $\bullet \sim p$
+\end{itemize}
+Note that modus tollens takes advantage of the contrapositive of a statement.
+\subsection{Rules of inference}
+A rule of inference is a form of argument that is valid.\\ \\
+Along with modus ponens and modus tollens, there are other rules of inference.
+\subsubsection{Generalization}
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p$
+		\item[] $\bullet p \lor q$
+	\end{itemize}
+\end{varwidth}
+\hspace{4em}
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $q$
+		\item[] $\bullet p \lor q$
+	\end{itemize}
+\end{varwidth}
+\subsubsection{Specialization}
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p \land q$
+		\item[] $\bullet p$
+	\end{itemize}
+\end{varwidth}
+\hspace{4em}
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p \land q$
+		\item[] $\bullet q$
+	\end{itemize}
+\end{varwidth}
+\subsubsection{Elimination}
+If you have two possibilities and rule one out, the other one \textit{must} be the case.\\
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p \lor q$
+		\item[] $\sim q$
+		\item[] $\bullet p$
+	\end{itemize}
+\end{varwidth}
+\hspace{4em}
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p \lor q$
+		\item[] $\sim p$
+		\item[] $\bullet q$
+	\end{itemize}
+\end{varwidth}
+\subsubsection{Transitivity}
+Many arguments in mathematics contains chains of if-then statements, which logically flow from one statement to the next.
+Simply put, if one statement implies a second and a second implies a third, we can conclude that the first statement implies the third.\\
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p \rightarrow q$
+		\item[] $q \rightarrow r$
+		\item[] $\bullet p \rightarrow r$
+	\end{itemize}
+\end{varwidth}
+
+\subsubsection{Division into cases}
+It often happens that you know one thing or another is true. If you can show that in either case a certain conclusion is true, then this conclusion must also be true.\\
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $p \lor q$
+		\item[] $p \rightarrow r$
+		\item[] $q \rightarrow r$
+		\item[] $\bullet r$
+	\end{itemize}
+\end{varwidth}
+\subsection{Fallacies}
+A fallay is an error in reasoning that results in an invalid argument.
+There are a few common fallacies:
+\begin{enumerate}
+	\item Using ambiguous or false premises as if they were unambiguous or correct.
+	\item Circular reasoning - assuming what is to be proved without deriving it from the premises.
+	\item Jumping to a conclusion without adequate premises.
+	\item Using the converse or the inverse of a statement to reach a conclusion.
+\end{enumerate}
+\subsection{Contradiction rule}
+If you can show that the supposition that statement $p$ is false leads logically to a contradiction, then you can conclude that $p$ is true.\\ 
+\\Recall that this is the entire point of the proof by contradiction.\\
+\begin{varwidth}[t]{.5\textwidth}
+	\begin{itemize}
+		\itemsep0em
+		\item[] $\sim p \rightarrow false$
+		\item[] $\bullet p$
+	\end{itemize}
+\end{varwidth}
+\newpage
+\appendix
+\section{Logical equivalences}
+\begin{multicols}{3}
+\begin{itemize}
+	\item[] \textbf{Commutative laws}:
+	\item[] \textbf{Associative laws}:
+	\item[] \textbf{Distributive laws}:
+	\item[] \textbf{Identity laws}:
+	\item[] \textbf{Negation laws}:
+	\item[] \textbf{Double negative law}:
+	\item[] \textbf{Idempotent laws}:
+	\item[] \textbf{Universal bound laws}:
+	\item[] \textbf{De Morgan's laws}:
+	\item[] \textbf{Absorption laws}:
+	\item[] \textbf{Negation of true and false}:
+\end{itemize}
+\columnbreak
+\begin{itemize}
+	\item[] $p \land q \equiv q \land p$
+	\item[] $(p \land q) \land r \equiv p \land (q \land r)$
+	\item[] $p \land (q \lor r) \equiv (p \land q) \lor (p \land r)$
+	\item[] $p \land true \equiv p$
+	\item[] $p \lor \sim p \equiv true$
+	\item[] $\sim (\sim p) \equiv p$
+	\item[] $p \land p \equiv p$
+	\item[] $p \lor true \equiv true$
+	\item[] $\sim(p \land q) \equiv \sim p \lor \sim q$
+	\item[] $p \lor (p \land q) \equiv p$
+	\item[] $\sim true \equiv false$
+\end{itemize}
+\columnbreak
+\begin{itemize}
+	\item[] $p \lor q \equiv q \lor p$
+	\item[] $(p \lor q) \lor r \equiv p \lor (q \lor r)$
+	\item[] $p \lor (q \land r) \equiv (p \lor q) \land (p \lor r)$
+	\item[] $p \lor false \equiv p$
+	\item[] $p \land \sim p \equiv false$
+	\item[]
+	\item[] $p \lor p \equiv p$
+	\item[] $p \land false \equiv false$
+	\item[] $\sim(p \lor q) \equiv \sim p \land \sim q$
+	\item[] $p \land (p \lor q) \equiv p$
+	\item[] $\sim false \equiv true$
+\end{itemize}
+\end{multicols}
+\section{Order of operations}
+\begin{enumerate}
+	\item $()$ parentheses
+	\item $\sim$ not
+	\item $\land, \lor$ and, or
+	\item $\rightarrow, \leftrightarrow$ if-then/implies, if and only if
+\end{enumerate}
+\end{document}

@@ -1,0 +1,78 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 1 - Introduction to Proofs \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Proof Techniques}
+A proof is a concise, polished argument explaining the validity of a statement.
+\subsection{Proof by Construction}
+A proof by construction demonstrates the existence of a mathematical object by creating the object.
+\subsection{Proof by Counterexample}
+Conversely, a proof by counterexample provides a mathematical object that disproves a given statement.
+\subsection{Proof by Contraposition}
+The contraposition of \begin{center}$if\ P\ then\ Q$\end{center} is \begin{center}$if\ \sim P\ then\ \sim Q$\end{center}
+Both statements are logically equivalent, and hence you can prove one by proving the other.
+\subsection{Proof by Contradiction}
+Given a statement S, only one of the following is true:
+\begin{center}$S\ is\ true$\\$ \sim S\ is\ true$\end{center}
+Thus to prove a statement S by contradiction, you first assume $\sim$S is true. Then use facts and theorems to arrive at a contradiction, which then implies that $\sim$S is false, and hence S is true.
+
+\section{Logical Statements}
+\subsection{If-then}
+Many statements in proofs have the following structure:\\ \begin{center}$if\ P\ then\ Q$ \end{center}
+We can use direct proofs to prove statements of this form: We first assume P is true, then work forwards by combining P with other facts and theorems to conclude that Q is true.
+
+\subsection{For-all}
+The for-all statement, $\forall x\ P(x)$,
+essentially states that P(x) is true for all x in a given set. To prove statements of this form, we prove that P(x) is true for a particular but arbitrary x. Since x is arbitrary (that is, x is no different to the other elements of the set it was taken from), we can conclude that P(x) is true for all x.
+
+\appendix
+\section{Definitions}
+Definition 1.3.1 (Divisibility) - if $n$ and $d$ are integers and d $\neq$ 0, then $n$ is divisible by $d$ if, and only if, $n$ equals $d$ times some integer.
+\begin{center} $d|n$ $\Longleftrightarrow$ $\exists k \in \Z, n=dk$ \end{center}
+Definition 1.6.1 - An integer n is even if, and only if, n equals twice some integer.\\An integer n is odd if, and only if, n equals twice some integer plus 1.
+\begin{center}$n$ is even $\Longleftrightarrow$ $\exists$ an integer $k$ such that $n=2k$\\
+$n$ is odd $\Longleftrightarrow$ $\exists$ an integer $k$ such that $n=2k+1$\end{center}
+\section{Theorems}
+Theorem 4.3.1 (Epp) $\forall a,b \in Z_{+}$, if a$|$b then $a \le b$\\
+Theorem 4.3.3 (Epp) - Transitivity of Divisibility
+\begin{center} $\forall a,b,c \in Z$ if a$|$b and b$|$c, then a$|$c \end{center}
+\section{Notation}
+\subsection{Set Notation}
+$\R$ - the set of real numbers\\
+$\Z$ - the set of all integers\\
+$\Q$ - the set of all rational numbers\\
+\subsection{Logic Notation}
+$\exists$ - there exists at least one\\
+$\exists!|$ - there exists one and only one\\
+$\forall$ - for all\\
+$\in$ - is a member of\\
+$\notin$ - is not a member of\\
+$\ni$ - such that\\
+
+\section{Properties of the Real Numbers}
+\begin{enumerate}
+  \item Closure: Integers are closed under addition and multiplication.\\ $\forall x,y \in \Z, x + y \in \Z,$ and $xy \in Z$\\ \\
+  For all real numbers a,b, and c,\
+  \item Commutativity: $a + b = b + a$ and $ab = ba$
+  \item Distributivity: $a(b + c) = ab + ac$
+  \item Trichotomy: exactly one of the following is true:\\
+  $a < b$, $a > b$, or $a = b$
+\end{enumerate}
+
+
+\end{document}

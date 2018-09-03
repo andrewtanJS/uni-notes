@@ -1,0 +1,114 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 3 - The Logic of Quantified Statements  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Predicates and quantified statements}
+A \textbf{predicate} is a sentence that contains a finite number of values and becomes a statement when specific values are substituted for the variables.\\
+The \textbf{domain} of a predicate variable is the set of all values that may be substituted in place of the variable.\\
+The \textbf{truth set} of a predicate $P(x)$, where $x$ has a domain $D$, is the set of all elements of $D$ that make $P(x)$ true when they are substituted for $x$. The truth set of $P(x)$ is denoted
+\begin{center}
+	$\{x \in D$  $|$  $P(x)\}$
+\end{center}
+\subsection{The universal quantifier}
+The symbol $\forall$, denoted "for all", is called the \textbf{universal quantifier}.\\ \\
+Let $Q(x)$ be a predicate and $D$ the domain of $x$. A \textbf{universal statement} is a statement of the form 
+\begin{center}
+	$\forall x \in D, Q(x)$
+\end{center}
+It is defined to be true iff $Q(x)$ is true for every $x$ in $D$, and it is defined to be false iff $Q(x)$ is false for at least one $x$ in $D$.\\
+A value for $x$ for which $Q(x)$ is false is called a \textbf{counterexample}.\\ \\
+The \textbf{method of exhaustion} proves that a universal statement is true by exhausting all cases or proving that the statement is true for each element in the domain.
+\subsection{The existential quantifier}
+The symbol $\exists$, denoted "there exists", is called the \textbf{existential quantifier}.\\ \\
+Let $Q(x)$ be a predicate and $D$ the domain of $x$. An \textbf{existential statement} is a statement of the form 
+\begin{center}
+	$\exists x \in D$ such that $Q(x)$
+\end{center}
+It is defined to be true iff $Q(x)$ is true for at least one $x$ in $D$, and it is false iff $Q(x)$ is false for all $x$ in $D$.\\ \\ 
+Furthermore, the symbol $\exists!$ is used to denote "there exists a unique" or "there is one and only one". 
+\subsection{Universal conditional statements}
+The \textbf{universal conditional statement} comes in the form of:
+\begin{center}
+	$\forall x$, if $P(x)$ then $Q(x)$
+\end{center}
+\subsubsection{Equivalent forms of universal and existential statements}
+Given a statement $\forall x \in U,$ if $P(x)$ then $Q(x)$, we can narrow the domain $U$ to be the domain $D$ consisting of all values of the variable $x$ that make $P(x)$ true:
+\begin{center}
+	$\forall x \in U,$ if $P(x)$ then $Q(x) \equiv \forall x \in D$, $Q(x)$
+\end{center} 
+This works similarly for existential statements.
+\subsection{Implicit quantification}
+Let $P(x)$ and $Q(x)$ be predicates and supposed the common domain of $x$ is $D$.\\
+$\bullet$ The notation $P(x) \implies Q(x)$ means that every element in the truth set of $P(x)$ is in the truth set of $Q(x)$, or, equivalently, $\forall x, P(x) \rightarrow Q(x)$.\\
+$\bullet$ The notaion $P(x) \iff Q(x)$ means that the truth sets of $P(x)$ and $Q(x)$ are identical, or, equivalently, $\forall x, P(x) \leftrightarrow Q(x)$
+
+\subsection{Negations of quantified statements}
+Negation of a universal statement:
+\begin{center}
+	$\sim(\forall x$ in $D$, $P(x))$ $\equiv$ $\exists x$ in $D$ such that $\sim P(x)$
+\end{center}
+Negation of an existential statement:
+\begin{center}
+	$\sim(\exists x$ in $D$ such that $P(x))$ $\equiv$ $\forall x$ in $D$, $\sim P(x)$
+\end{center}
+Negation of universal conditional statements:
+\begin{center}
+	$\sim (\forall x$, $P(x) \rightarrow Q(x))$ $\equiv$ $\exists x$ such that $P(x) \land \sim Q(x)$
+\end{center}
+
+\subsection{Variants of universal conditional statements}
+Consider a statement of the form: $\forall x \in D$, if $P(x)$ then $Q(x)$
+\begin{enumerate}
+	\item Its contrapositive is: $\forall x \in D$, if $\sim Q(x)$ then $\sim P(x)$
+	\item Its converse is: $\forall x \in D$, if $Q(x)$ then $P(x)$
+	\item Its inverse is: $\forall x \in D$, if $\sim P(x)$ then $\sim Q(x)$
+\end{enumerate}
+\section{Statements with multiple quantifiers}
+A statement may have multiple quantifiers, and the meaning of the statement depends on the quantifiers used, and their order within the statement.
+
+\subsection{Negation of multiply-quantified statements}
+We can use the equivalencies for the negation of statements with only one quantifier to deduce the negations of multiply quantified statements. For example:\\
+As $\sim(\forall x$ in $D$, $P(x)) \equiv \exists x$ in $D$ such that $\sim P(x)$,\\ and $\sim (\exists x$ in $D$ such that $P(x))$ $\equiv$ $\forall x$ in $D, \sim P(x)$,
+\begin{center}
+	$\sim (\forall x$ in $D$, $\exists y$ in $E$ such that $P(x,y))$ $\equiv$ $\exists x$ in $D$ such that $\forall y$ in  $E$, $\sim P(x,y)$
+\end{center}
+As a general rule, to negate a quantified statement, negate all statement variables, and switch all $\forall$'s and $\exists$'s while maintaining their order.
+
+
+\section{Arguments with quantified statements}
+The rule of \textbf{universal instantiation} states that if some property is true of \textit{everything} in the set, then it is true of \textit{any particular thing} in the set.
+This rule is the fundamental tool for deductive reasoning.\\ \\
+With this, we can obtain the valid form of argument, \textbf{universal modus ponens}:
+\begin{center}
+	$\forall x$, if $P(x)$ then $Q(x)$\\
+	$P(a)$ for a particular $a$.\\
+	$\bullet$ $Q(a)$.
+\end{center}
+Likewise, we can obtain the valid form of argument, \textbf{universal modus tollens}:
+\begin{center}
+	$\forall x$, if $P(x)$ then $Q(x)$\\
+	$\sim Q(a))$ for a particular $a$.\\
+	$\bullet$ $\sim P(a)$
+\end{center}
+Furthermore, we can create additional forms of arguments involving universally quantified statements simply through \textbf{universal transitivity}:
+\begin{center}
+	$\forall x$, $P(x) \rightarrow Q(x)$\\
+	$\forall x$, $Q(x) \rightarrow R(x)$\\
+	$\bullet$ 	$\forall x$, $P(x) \rightarrow R(x)$\\
+\end{center}
+\end{document}

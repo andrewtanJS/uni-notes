@@ -1,0 +1,99 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 4 - Number Theory  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Mathematical Induction}
+The Principle of Mathematical Induction is an inference rule concerning a predicate $P(n)$:
+\begin{multicols}{3}
+\flushleft Base case:  \\
+Inductive step: \\
+Conclusion:\\
+\columnbreak
+$P(0)$\\
+$\forall k \in \N, P(k) \rightarrow P(k+1)$\\
+$\bullet \forall n \in \N, P(n)$
+\columnbreak
+\end{multicols}
+The steps for using mathematical induction are outlined as such:
+\begin{enumerate}
+	\item Identify the predicate $P(n)$. The predicate is a statement that evaluates to true or false. Usually, $n\in\N$, and in any case, we need to qualify the domain of $n$ by saying "For all $n\in\N"$ or the respective domain.
+	\item Prove the \textbf{Base case}, P(0). Note that there can be more than one base case, and it need not start at P(0).
+	\item Prove the \textbf{Inductive step}, which is an implication statement involving universal quantification. The usual rules for proving such statements apply here, and should have the following steps:\\ \\
+	For any $k\in\N$:
+	\begin{enumerate}
+		\item[3.1] Assume $P(k)$ is true [Denoted as the \textit{Inductive hypothesis}]
+		\item[3.2] Consider P(k+1), and break it down into a smaller problem of size k.
+		\item[3.3] Apply the inductive hypothesis on the size-k problem.
+		\item[3.4] Proceed to show that P(k+1) is true.
+	\end{enumerate}
+	\item Write the \textbf{Conclusion} (Given that the base case $P(0)$ is true, it follows that $P(1)$ is true and so on.)
+\end{enumerate}
+\subsection{Strong induction}
+The only difference between Strong Induction and Regular Induction lies only in the Inductive hypothesis.\\
+In Strong Induction, we assume $P(k), P(k-1), P(k-2),\dots,P(a)$ are \textit{all} true.\\
+Essentially, we're making a stronger assumption about the values of $n$ which make $P(n)$ true, from this stronger assumption, we proceed as before to show that $P(k+1)$ is true.
+
+\section{Prime numbers}
+An integer $n$ is \textbf{prime} if, and only if, $n>1$ and for all positive integers $r$ and $s$, if $n=rs$, then either $r$ or $s$ equals $n$.\\
+An integer $n$ is \textbf{composite} if, and only if, $n>1$ and $n=rs$ for some integers $r$ and $s$ with $1<r<n$ and $1<s<n$.\\ \\ \\
+Symbolically,\\
+\begin{tabular}%
+{>{\raggedleft\arraybackslash}p{3.5cm}%
+	>{\raggedright\arraybackslash}p{10cm}%
+}
+$n$ is prime $\iff$ & $\forall$ positive integers $r$ and $s$, if $n=rs$ then either $r=1$ and $s=n$ or $r=n$ and $s=1$\\
+$n$ is composite$\iff$ & $\exists$ positive integers $r$ and $s$ such that $n=rs$ and $1<r<n$ and $1<s<n$
+\end{tabular}\\ \\
+Clearly, every integer $n>1$ is either prime or composite.
+
+\subsection{The Fundamental Theorem of Arithmetic}
+The Fundamental Theorem of Arithmetic states that every positive integer greater than 1 can be \textit{uniquely} factorized into a product of prime numbers.\\ \\
+More formally, given any integer $n>1$, there exists a positive integer $k$, distinct prime numbers $p_1,p_2,\dots,p_k$ and positive integers $e_1,e_2,\dots,e_k$ such that
+\begin{center} $n=p^{e_1}_{1}p^{e_2}_{2}p^{e_3}_{3}\dots p^{e_k}_{k}$,
+\end{center}
+and any other expression for $n$ as a product of primes is identical to this except, perhaps, for the order in which the factors are written.
+
+\subsection{Primality test}
+There are multiple tests to see if an integer $n$ is prime.\\ \\
+The most straightforward method is Trial Division, by testing if $n$ is divisible by all integers $k$ between $2$ and $\sqrt{n}$.\\ \\
+The Sieve of Eratosthenes is a list of primes that is generated simply by starting with a list $C$ of all integers greater than 1 and $p=2$, and crossing out all multiples of $p$, and repeating with the next uncrossed number in $C$.\\ \\ 
+The Miller-Rabin primality test is another primality test which determines whether a given number is prime. It relies on a set of equalities that hold true for prime values. However, it is probabalistic, and composites may be passed off as a prime.
+
+\subsection{Open questions}
+There are several open questions concerning prime numbers, and listed below are a few of interest:\\ \\
+\textbf{Goldbach's Conjecture}: Every even integer greater than 2 can be written as a sum of two primes.\\
+\textbf{Twin Primes Conjecture}: There are infinitely many primes $p$ such that $p+2$ is also a prime.
+
+
+\appendix
+\section{Prime properties}
+\subsection{Theorems}
+\begin{itemize}
+	\item[] Theorem 4.2.3: If $p$ is a prime and $x_1, x_2,\dots, x_n$ are any integers such that: $p\mid x_1x_2\dots x_n$, then $p\mid x_i$ for some $x_i$ $(1\le i \le n)$.
+	\item[] Theorem 4.3.5 (Epp): Fundamental Theorem of Arithmetic: Given any integer $n>1$, there exists a positive integer $k$, distinct prime numbers $p_1,p_2,\dots,p_k$ and positive integers $e_1,e_2,\dots,e_k$ such that $n=p^{e_1}_{1}p^{e_2}_{2}p^{e_3}_{3}\dots p^{e_k}_{k}$, and any other expression for $n$ as a product of primes is identical to this except, perhaps, for the order in which the factors are written.
+	\item[] Theorem 4.7.3 (Epp): The set of primes is infinite.
+	\item[] Prime Number Theorem: The number of primes less than or equal to an integer $x$ is approximately $x /\log(x)$.
+\end{itemize}
+\subsection{Propositions}
+\begin{itemize}
+	\item[] Proposition 4.2.2: For any two primes $p$ and $p'$, if $p\mid p'$ then $p=p'$.
+	\item[] Proposition 4.7.3 (Epp): For any $a\in\Z$ and any prime $p$, if $p\mid a$ then $p\nmid a$ then $p\mid (a+1)$.
+\end{itemize}
+
+
+\end{document}

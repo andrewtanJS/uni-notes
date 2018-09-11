@@ -1,0 +1,159 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 5 - Number Theory, Continued  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Well Ordering Principle}
+The \textbf{Well Ordering Principle} states that if a non-empty set $S$ $\subseteq$ $\Z$ has a \textit{lower bound}, then $S$ has a least element.\\\\
+Furthermore, it also states that if a non-empty set $S\subseteq\Z$ has an upper bound, then $S$ has a greatest element.
+
+\section{Quotient-Remainder Theorem}
+Given any integer $a$ and any positive integer $b$, there exist unique integers $q$ and $r$ such that:
+\begin{center}
+	$a=bq+r$ and $0\le r < b$
+\end{center}
+The integer $q$ is called the quotient, and the integer $r$ is called the remainder.\\\\
+The Quotient-Remainder Theorem provides the basis for writing an integer $n$ as a sequence of digits in a base $b$.
+
+\section{Greatest Common Divisor}
+Let $a$ and $b$ be integers, not both zero. The \textbf{greatest common divisor} of $a$ and $b$, denoted $gcd(a,b)$, is the integer $d$ satisfying:
+\begin{enumerate}
+	\item $d\mid a$ and $d\mid b$
+	\item $\forall c \in \Z$, if $c\mid a$ and $c\mid b$ then $c \le d$
+\end{enumerate}
+\subsection{Euclid's algorithm}
+Euclid's algorithm is an efficient algorithm that computes the greatest common divisor between two integers.
+\begin{lstlisting}[escapeinside={(*}{*)}]
+function gcd((*$a, b$*)):
+	while (*$b > 0$*):
+		(*$c = a \% b$*)
+		(*$(a, b) = (b, c)$*)
+	return (*$a$*)
+\end{lstlisting}
+\subsection{Extended Euclidean Algorithm}
+\textbf{Bézout's identity}: Let $a, b$ be integers, not both zero, and let $d=gcd(a,b)$. Then there exist integers $x,y$ such that:
+\begin{center}
+	$ax+by=d$
+\end{center}
+Basically, the gcd of two integers is some linear combination of those numbers.\\
+With this identity, we can sketch a proof for the Extended Euclidean Algorithm:
+\begin{enumerate}
+	\item Trace the execution of Euclid's algorithm on a,b.
+	\item The last line gives us the gcd $d$.
+	\item Work backwards to express $d$ in terms of linear combinations of the quotients and remainders of the previous lines, until we reach the top.
+\end{enumerate}
+
+\section{Modulo Arithmetic}
+Let $m$ and $n$ be integers, and let $d$ be a positive integer. We say that $m$ is \textbf{congruent} to $n$ \textbf{modulo} $d$, and write:
+\begin{center}
+	$m\equiv n$  (mod $d$)
+\end{center}
+if, and only if,
+\begin{center}
+	$d\mid (m - n)$
+\end{center}
+\subsection{Arithmetic}
+Given integers $a, b, c, d,$ and $n$ where $n>1$, and
+\begin{center}
+	$a \equiv c$ (mod $n$) and $b \equiv d$ (mod $n$),
+\end{center}
+then
+\begin{enumerate}
+	\item $(a+b) \equiv (c+d)$ (mod $n$)
+	\item $(a-b) \equiv (c-d)$ (mod $n$)
+	\item $ab\equiv cd$ (mod $n$)
+	\item $a^m \equiv c^m$ (mod $n$), for all positive integers $m$
+\end{enumerate}
+We can extend part 3 as such:\\
+\begin{center}
+	$ab \equiv$ $[(a$ mod $n)(b$ mod $n)]$ (mod $n$)
+\end{center}
+Furthermore, if $m$ is a positive integer, then
+\begin{center}
+	$a^m \equiv [(a$ mod $n)^m]$ (mod $n$)
+\end{center}
+\subsection{Inverses}
+For any integers $a, n$ with $n>1$, if an integer $s$ is such that $as \equiv 1$ (mod $n$), then $s$ is called the \textbf{multiplicative inverse of $a$ modulo $n$}. We may write the inverse as $a^{-1}$.\\ \\
+The commutative law still applies in modulo arithmetic, so $a^{-1-}a \equiv 1$ (mod $n$)
+
+\newpage
+\appendix
+\section{Definitions}
+\begin{enumerate}
+	\item[] Definition 4.3.1 (Lower Bound) An integer $b$ is said to be a lower bound for a set $X \subseteq \Z$ if $b \le x$ for all $x \in X$
+	\item[] Definition 4.5.1 (Greatest Common Divisor) Let $a$ and $b$ be integers, not both zero. The greatest common divisor of $a$ and $b$, denoted $gcd(a,b)$, is the integer $d$ satisfying:
+	\begin{enumerate}
+		\item[(i)] $d\mid a$ and $d\mid b$
+		\item[(ii)] $\forall c \in \Z$, if $c\mid a$ and $c\mid b$ then $c \le d$. 
+	\end{enumerate}
+	\item[] Definition 4.5.4 (Relatively Prime) Integers $a$ and $b$ are relatively prime (or coprime) if and only if gcd($a,b$) = 1
+	\item[] Definition 4.6.1 (Least Common Multiple) For any non-zero integers $a,b$, their least common multiple, denoted $lcm(a,b)$, is the positive integer $m$ such that: 
+	\begin{enumerate}
+		\item[(i)] $a\mid m$ and $b\mid m$
+		\item[(ii)] for all positive integers $c$, if $a\mid c$ and $b\mid c$, then $m\le c$
+	\end{enumerate}
+	\item[] Definition 4.7.1 (Congruence modulo) Let $m$ and $n$ be integers, and $d$ be a positive integer. We say that $m$ is congruent to $n$ modulo $d$, and write $m\equiv n$ (mod $d$) $\iff$ $d\mid (m-n)$
+	\item[] Definition 4.7.2 (Multiplicative inverse modulo $n$) For any integers $a, n$ with $n>1$, if an integer $s$ is such that $as \equiv 1$ (mod $n$), then $s$ is called the multiplicative inverse of $a$ modulo $n$. We may write the inverse as $a^{-1}$.
+	
+\end{enumerate}
+
+\section{Theorems}
+\begin{enumerate}
+	\item[] Theorem 4.3.2 (Well Ordering Principle) If a non-empty set $S \subseteq \Z$ has a lower bound, then S has a least element. Furthermore, if $S$ has an upper bound, then $S$ has a greatest element
+	\item[] Theorem 4.4.1 (Quotient-Remainder Theorem) Given any integer $a$ and any positive integer $b$, there exist unique integers $q$ and $r$ such that $a=bq+r$ and $0\le r < b$
+	\item[] Theorem 4.5.3 (Bézout's identity) Let $a, b$ be integers, not both zero, and let $d=gcd(a,b)$. Then there exist integers $x,y$ such that $ax+by=d$)
+	\item[] Theorem 4.7.3 (Existence of multiplicative inverse) For any integer $a$, its multiplicative inverse modulo $n$ (where $n>1$), $a^{-1}$, exists if, and only if, $a$ and $n$ are coprime.\\
+	$\rightarrow$ Corollary 4.7.4 If $n=p$ is a prime number, then all integers $a$ in the range $0<a<p$ have multiplicative inverses modulo $p$
+	\item[] Theorem 8.4.1 Epp (Modular Equivalences) Let $a, b,$ and $n$ be any integers and suppose $n>1$. The following statements are all equivalent:
+	\begin{enumerate}
+		\item $n\mid (a-b)$
+		\item $a\equiv b$ (mod $n$)
+		\item $a=b+kn$ for some integer $k$
+		\item $a$ and $b$ have the same (non-negative) remainder when divided by $n$
+		\item $a$ mod $n$ $=$ $b$ mod $n$
+	\end{enumerate}
+	\item[] Theorem 8.4.3 Epp (Modulo Arithmetic) Let $a, b, c, d,$ and $n$ be integers with $n>1$, and suppose:
+	\begin{center}
+		$a \equiv c$ (mod $n$) and $b \equiv d$ (mod $n$).
+	\end{center}
+	Then
+	\begin{enumerate}
+		\item $(a+b) \equiv (c+d)$ (mod $n$)
+		\item $(a-b) \equiv (c-d)$ (mod $n$)
+		\item $ab\equiv cd$ (mod $n$)
+		\item $a^m \equiv c^m$ (mod $n$), for all positive integers $m$
+	\end{enumerate}
+	$\rightarrow$ Corollary 8.4.4 Epp - 
+	\begin{center}
+		$ab \equiv$ $[(a$ mod $n)(b$ mod $n)]$ (mod $n$)
+	\end{center}
+	In particular, if $m$ is a positive integer, then
+	\begin{center}
+		$a^m \equiv [(a$ mod $n)^m]$ (mod $n$)
+	\end{center}
+	\item[] Theorem 8.4.9 Epp - For all integers $a,b,c,n$ with $n>1$ and $a$ and $n$ are coprime, if $ab\equiv ac$ (mod $n$), then $b\equiv c$ (mod $n$)
+\end{enumerate}
+
+\section{Propositions}
+\begin{enumerate}
+	\item[] Proposition 4.3.3 (Uniqueness of least element) If a set $S$ of integers has a least element, then the least element is unique.
+	\item[] Proposition 4.3.4 (Uniqueness of greatest element) if a set $S$ of integers has a greatest element, then the greatest element is unique.
+	\item[] Proposition 4.5.2 (Existence of gcd) For any integers $a, b$, not both zero, their gcd exists and is unique.
+	\item[] Proposition 4.5.5 - For any integers $a, b$, not both zero, if $c$ is a common divisor of $a$ and $b$, then $c\mid$ gcd($a,b$)
+\end{enumerate}
+
+\end{document}

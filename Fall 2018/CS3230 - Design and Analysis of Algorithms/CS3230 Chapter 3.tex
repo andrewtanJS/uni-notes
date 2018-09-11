@@ -107,7 +107,7 @@ Partition((*$A$*), (*$p$*), (*$r$*)):
 for (*$j \leftarrow p$*) to (*$r-1$*)
 	if (*$A[j] \le x$*) then
 		(*$i \leftarrow i + 1$*)
-		swap ((*$A[i]$*), (*$A[j]$*);
+		swap ((*$A[i]$*), (*$A[j]$*));
 	end if
 swap ((*$A[i+1]$*), (*$A[r]$*));
 return ((*$i+1$*));

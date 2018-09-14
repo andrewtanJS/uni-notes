@@ -26,14 +26,14 @@ As the data being sorted may require a relatively large amount of resources to s
 Selection sort repeatedly moves the smallest element from the input to the front.
 
 \begin{lstlisting}[escapeinside={(*}{*)}]
-for (*$i\leftarrow1$*) to (*$N-1$*) do
-	(*$min \leftarrow i;$*)
-	for (*$j\leftarrow i+1$*) to (*$N$*) do
-		if (*$a[j]<a[min]$*) then (*$min\leftarrow j;$*)
-	(*$t\leftarrow a[min];$*)
-	(*$a[min]\leftarrow a[i];$*)
-	(*$a[i] \leftarrow t;$*)
-end of for-loop;
+for (*$i\leftarrow1$*) to (*$N-1$*):
+	(*$min \leftarrow i$*)
+	for (*$j\leftarrow i+1$*) to (*$N$*):
+		if (*$a[j]<a[min]$*):
+			(*$min\leftarrow j$*)
+	(*$t\leftarrow a[min]$*)
+	(*$a[min]\leftarrow a[i]$*)
+	(*$a[i] \leftarrow t$*)
 \end{lstlisting}
 \textbf{Complexity:}\\
 For comparisons,
@@ -53,15 +53,13 @@ number of data movements $\in \Theta(n)$.
 \subsection{Insertion Sort}
 Insertion sort repeatedly picks an element from the input, and inserts it into its sorted position in the output subsequence.
 \begin{lstlisting}[escapeinside={(*}{*)}]
-for (*$i\leftarrow2$*) to (*$n$*) do
-	(*$v \leftarrow a[i];$*)
+for (*$i\leftarrow2$*) to (*$n$*):
+	(*$v \leftarrow a[i]$*)
 	(*$j\leftarrow i$*)
-	while (*$a[j-1]>v$*) do
-		(*$a[j]\leftarrow a[j-1];$*)
-		(*$j\leftarrow j-1;$*)
-	end of while-loop;
-(*$a[j] \leftarrow v;$*)
-end of for-loop;
+	while (*$a[j-1]>v$*):
+		(*$a[j]\leftarrow a[j-1]$*)
+		(*$j\leftarrow j-1$*)
+	(*$a[j] \leftarrow v$*)
 \end{lstlisting}
 
 Correctness can be proven through mathematical induction, by considering the output subsequence before and after insertion.\\ \\
@@ -88,24 +86,23 @@ Binary search is a search algorithm that utilizes a divide-and-conquer approach 
 \subsubsection{Recursive implementation}
 \begin{lstlisting}[escapeinside={(*}{*)}]
 BinarySearch((*$A$*), (*$key$*), (*$l$*), (*$r$*)):
-	if (*$l>r$*) return NOT FOUND;
-	(*$m \leftarrow \lfloor \frac{l+r}{2}\rfloor$*);
-	if (*$key==A[m]$*) return (*$m$*);
-	if (*$key<A[m]$*) return BinarySearch((*$A$*), (*$key$*), (*$l$*), (*$m-1$*));
-	if (*$key>A[m]$*) return BinarySearch((*$A$*), (*$key$*), (*$m+1$*), (*$r$*)); 
+	if (*$l>r$*) return NOT FOUND
+	(*$m \leftarrow \lfloor \frac{l+r}{2}\rfloor$*)
+	if (*$key==A[m]$*) return (*$m$*)
+	if (*$key<A[m]$*) return BinarySearch((*$A$*), (*$key$*), (*$l$*), (*$m-1$*))
+	if (*$key>A[m]$*) return BinarySearch((*$A$*), (*$key$*), (*$m+1$*), (*$r$*))
 \end{lstlisting}
 
 \subsubsection{Iterative implementation}
 \begin{lstlisting}[escapeinside={(*}{*)}]
 BinarySearch((*$A$*), (*$key$*)):
-(*$l \leftarrow 1$*); (*$r \leftarrow n;$*)
-while (*$r \ge l$*):
-	(*$m \leftarrow \lfloor \frac{l+r}{2} \rfloor$*);
-	if (*$A[m]<key$*) then (*$l \leftarrow m+1$*);
-	if (*$A[m]>key$*) then (*$r \leftarrow m-1$*);
-	if (*$A[m] == key$*) then return (*$m$*);
-end of while-loop;
-return NOT FOUND;
+	(*$l \leftarrow 1$*); (*$r \leftarrow n;$*)
+	while (*$r \ge l$*):
+		(*$m \leftarrow \lfloor \frac{l+r}{2} \rfloor$*)
+		if (*$A[m]<key$*) then (*$l \leftarrow m+1$*)
+		if (*$A[m]>key$*) then (*$r \leftarrow m-1$*)
+		if (*$A[m] == key$*) then return (*$m$*)
+	return NOT FOUND;
 \end{lstlisting}
 
 \section{Additional Math Addendums}
@@ -117,6 +114,8 @@ So, if $f(n) \in o(g(n))$, $f(n) \in O(g(n))$ and $f(n) \notin \Omega(g(n))$
 \subsection{Approximation}
 Often, we use $\approx$ to denote that if $f(n) \approx g(n)$ we can use $g(n)$ as an approximation of $f(n)$ in subsequent analysis without loss of generality.\\
 Thus, $f(n) \approx g(n)$ means that $f(n) = g(n) + o(g(n))$
+
+\(\Theta\)
 
 \subsection{Mathematical identities and formulae}
 \subsubsection{Sterling approximation}

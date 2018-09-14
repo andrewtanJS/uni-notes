@@ -34,31 +34,29 @@ This chapter will explore several divide-and-conquer algorithms common in comput
 \end{itemize}
 \begin{lstlisting}[escapeinside={(*}{*)}]
 MergeSort((*$A$*)):
-if (*$n==1$*) then return;
-Copy the first (*$\lfloor n/2 \rfloor$*) elements of (*$A$*) to array (*$B$*);
-Copy the remaining (*$\lceil n/2 \rceil$*) elements of (*$A$*) to array (*$C$*);
-
-MergeSort((*$B$*));
-MergeSort((*$C$*));
-
-Merge((*$A$*), (*$B$*), (*$C$*));
+	if (*$n==1$*) then return
+	Copy the first (*$\lfloor n/2 \rfloor$*) elements of (*$A$*) to array (*$B$*)
+	Copy the remaining (*$\lceil n/2 \rceil$*) elements of (*$A$*) to array (*$C$*)
+	
+	MergeSort((*$B$*))
+	MergeSort((*$C$*))
+	
+	Merge((*$A$*), (*$B$*), (*$C$*))
 \end{lstlisting}
 
 \begin{lstlisting}[escapeinside={(*}{*)}]
 Merge((*$A$*), (*$B$*), (*$C$*)):
-(*$B[n+1] \leftarrow \infty$*);
-(*$C[m+1] \leftarrow \infty$*);
-
-(*$i \leftarrow 1$*), (*$j \leftarrow 1$*);
-
-for (*$k\leftarrow 1$*) to (*$n+m$*)
-	if (*$B[i] < C[j]$*) then 
-		(*$A[k] \leftarrow B[i]$*);
-		(*$i \leftarrow i + 1$*);
-	else
-		(*$A[k] \leftarrow C[j]$*);
-		(*$j \leftarrow j + 1$*);
-end of for-loop
+	(*$B[n+1] \leftarrow \infty$*)
+	(*$C[m+1] \leftarrow \infty$*)
+	(*$i \leftarrow 1$*); (*$j \leftarrow 1$*)
+	
+	for (*$k\leftarrow 1$*) to (*$n+m$*)
+		if (*$B[i] < C[j]$*):
+			(*$A[k] \leftarrow B[i]$*)
+			(*$i \leftarrow i + 1$*)
+		else:
+			(*$A[k] \leftarrow C[j]$*)
+			(*$j \leftarrow j + 1$*)
 \end{lstlisting}
 \subsection{Analysis of merge sort}
 Let $T(n)$ be the number of comparisons in the worst case.
@@ -94,23 +92,21 @@ Hence, the number of comparisons taken by MergeSort is in $\Theta(n \log(n))$
 \end{itemize}
 \begin{lstlisting}[escapeinside={(*}{*)}]
 QuickSort((*$A$*), (*$p$*), (*$r$*)):
-if (*$p<r$*) then
-	(*$j\leftarrow$*) partition((*$A$*), (*$p$*), (*$r$*));
-	QuickSort((*$A$*), (*$p$*), (*$j-1$*))
-	QuickSort((*$A$*), (*$j+1$*), (*$r$*))
-end if
+	if (*$p<r$*):
+		(*$j\leftarrow$*) partition((*$A$*), (*$p$*), (*$r$*))
+		QuickSort((*$A$*), (*$p$*), (*$j-1$*))
+		QuickSort((*$A$*), (*$j+1$*), (*$r$*))
 \end{lstlisting}
 We can easily partition the array by using an algorithm that scans from left to right:
 \begin{lstlisting}[escapeinside={(*}{*)}]
 Partition((*$A$*), (*$p$*), (*$r$*)):
-(*$x \leftarrow A[r]$*); (*$i \leftarrow p-1$*);
-for (*$j \leftarrow p$*) to (*$r-1$*)
-	if (*$A[j] \le x$*) then
-		(*$i \leftarrow i + 1$*)
-		swap ((*$A[i]$*), (*$A[j]$*));
-	end if
-swap ((*$A[i+1]$*), (*$A[r]$*));
-return ((*$i+1$*));
+	(*$x \leftarrow A[r]$*); (*$i \leftarrow p-1$*)
+	for (*$j \leftarrow p$*) to (*$r-1$*):
+		if (*$A[j] \le x$*):
+			(*$i \leftarrow i + 1$*)
+			swap ((*$A[i]$*), (*$A[j]$*))
+	swap ((*$A[i+1]$*), (*$A[r]$*))
+	return ((*$i+1$*))
 \end{lstlisting}
 \subsection{Analysis of quick sort}
 For the partition function:
@@ -189,15 +185,12 @@ Given two $n$ by $n$ matrices $A$ and $B$, we would like to find $C=AB$.\\
 \\A straightforward algorithm that multiples 2 matrices $A$ and $B$ would simply be:
 \begin{lstlisting}[escapeinside={(*}{*)}]
 Multiply((*$A$*), (*$B$*), (*$C$*)):
-for (*$i \leftarrow 1$*) to (*$n$*)
-	for (*$j \leftarrow 1$*) to (*$n$*)
-		(*$temp \leftarrow 0$*);
-		for (*$k \leftarrow 1$*) to (*$n$*)
-			(*$temp \leftarrow temp + A[i,k]*B[k,j]$*);
-		end of for-loop
-		(*$C[i,j] \leftarrow temp$*)
-	end of for-loop
-end of for-loop
+	for (*$i \leftarrow 1$*) to (*$n$*):
+		for (*$j \leftarrow 1$*) to (*$n$*):
+			(*$temp \leftarrow 0$*);
+			for (*$k \leftarrow 1$*) to (*$n$*):
+				(*$temp \leftarrow temp + A[i,k]*B[k,j]$*)
+			(*$C[i,j] \leftarrow temp$*)
 \end{lstlisting}
 The number of multiplications is in $n^3$, and the number of additions is in $n^3$.\\
 \\ We can use a divide and conquer algorithm to reduce the number of additions:\\

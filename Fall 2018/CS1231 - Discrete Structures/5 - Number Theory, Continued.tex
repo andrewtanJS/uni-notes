@@ -88,7 +88,8 @@ Furthermore, if $m$ is a positive integer, then
 \end{center}
 \subsection{Inverses}
 For any integers $a, n$ with $n>1$, if an integer $s$ is such that $as \equiv 1$ (mod $n$), then $s$ is called the \textbf{multiplicative inverse of $a$ modulo $n$}. We may write the inverse as $a^{-1}$.\\ \\
-The commutative law still applies in modulo arithmetic, so $a^{-1-}a \equiv 1$ (mod $n$)
+The commutative law still applies in modulo arithmetic, so $a^{-1}a \equiv 1$ (mod $n$)\\ \\
+To find a modulo inverse $a^{-1}$ (mod $n$), we check first if $a$ and $n$ are coprime. From there, we can run the Extended Euclidean Algorithm to obtain $ax + ny = 1$ (by Bézout's Identity) for some $x, y$. Hence, $x$ is the multiplicative inverse modulo $n$ of $a$. 
 
 \newpage
 \appendix
@@ -115,7 +116,7 @@ The commutative law still applies in modulo arithmetic, so $a^{-1-}a \equiv 1$ (
 \begin{enumerate}
 	\item[] Theorem 4.3.2 (Well Ordering Principle) If a non-empty set $S \subseteq \Z$ has a lower bound, then S has a least element. Furthermore, if $S$ has an upper bound, then $S$ has a greatest element
 	\item[] Theorem 4.4.1 (Quotient-Remainder Theorem) Given any integer $a$ and any positive integer $b$, there exist unique integers $q$ and $r$ such that $a=bq+r$ and $0\le r < b$
-	\item[] Theorem 4.5.3 (Bézout's identity) Let $a, b$ be integers, not both zero, and let $d=gcd(a,b)$. Then there exist integers $x,y$ such that $ax+by=d$)
+	\item[] Theorem 4.5.3 (Bézout's Identity) Let $a, b$ be integers, not both zero, and let $d=gcd(a,b)$. Then there exist integers $x,y$ such that $ax+by=d$
 	\item[] Theorem 4.7.3 (Existence of multiplicative inverse) For any integer $a$, its multiplicative inverse modulo $n$ (where $n>1$), $a^{-1}$, exists if, and only if, $a$ and $n$ are coprime.\\
 	$\rightarrow$ Corollary 4.7.4 If $n=p$ is a prime number, then all integers $a$ in the range $0<a<p$ have multiplicative inverses modulo $p$
 	\item[] Theorem 8.4.1 Epp (Modular Equivalences) Let $a, b,$ and $n$ be any integers and suppose $n>1$. The following statements are all equivalent:

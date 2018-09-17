@@ -42,11 +42,11 @@ The two basic operations on the heap are \textit{SiftUp} and \textit{SiftDown}. 
 Iterative version of SiftUp, where A is the array, i is the value to SiftUp.
 \begin{lstlisting}[escapeinside={(*}{*)}]
 SiftUp((*$A$*), (*$i$*)):
-	if (*$i==1$*) then return;
+	if (*$i==1$*) then return
 	(*$j \leftarrow \lfloor i/2 \rfloor;$*) # where j is the parent
-	if (*$A[j] <= A[i]$*) then return;
-	swap ((*$A[i]$*), (*$A[j]$*));
-	SiftUp((*$A$*), (*$j$*));
+	if (*$A[j] <= A[i]$*) then return
+	swap ((*$A[i]$*), (*$A[j]$*))
+	SiftUp((*$A$*), (*$j$*))
 \end{lstlisting}
 Iterative version of SiftDown, where A is the array, i is the value to SiftDown, n is the size of the heap.
 \begin{lstlisting}[escapeinside={(*}{*)}]

@@ -1,0 +1,193 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 6 - Sequences and Recursion  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Sequences}
+A sequence of numbers is simply an ordered list of numbers. In general, we denote a sequence of numbers by
+\begin{center}
+	$a_0,a_1,a_2,\dots$
+\end{center}
+That is, $a_n = f(n)$ for some function $f$ and $n\in \N$. We denote $f$ as an \textbf{explicit formula} that permits direct computation of the $n^{th}$ term of the sequence.
+
+\subsection{Recurrence relation}
+We can also express sequences by specifying how $a_n$ is related to its predecessors $a_{n-1}, a_{n-2},\dots$ called the \textbf{recurrence relation}, together with some initial conditions.
+
+\section{Summation \& product}
+Summing up a sequence will also yield another sequence.
+\begin{center}
+	$\sum\limits_{i=m}^{n} a_i = a_m + a_{m+1} + \dots + a_{n-1} + a_n = S_n, \forall n \in \N$
+\end{center}
+Likewise, multiplying a sequence will also yield another sequence.
+\begin{center}
+	$\prod\limits_{i=m}^{n} a_i = a_m \times a_{m+1} \times \dots \times a_{n-1} \times a_n = P_n, \forall n \in \N$
+\end{center}
+A fairly well known summation sequence is the \textbf{triangle numbers}, where $\triangle_n$ equals the sum of the first $n+1$ integers, starting from 0.\\
+Likewise, the \textbf{factorials} is a product sequence, where $n!$ is the product of the first $n$ integers, starting from 1.\\\\
+Note that we can express the sums and products of different sequences recursively.\\\\
+It may also be more convenient to change the indexing variable in a sum by $(i)$ changing the term, and then $(ii)$ changing both lower and upper limits.
+
+\section{Common sequences}
+\subsection{Arithmetic sequence}
+An arithmetic sequence is given by the recurrence:
+\[
+\forall n \in \N, a_n=
+\begin{cases}
+a, & \text{if } n=0\\
+a_{n-1} + d, & \text{otherwise}
+\end{cases}
+\]
+where $a, d$ are real constants.
+The explicit formula is $a_n = a + nd$, $\forall n \in \N$.\\\\
+The sum of the first $n$ terms is defined as $S_n = \sum\limits_{i=0}^{n-1}a_i$, and this sequence has the explicit closed form formula:
+\begin{center}
+	$S_n = \frac{n}{2}[2a + (n-1)d]$, $\forall n \in \N$, and $a, d \in \R$
+\end{center}
+
+\subsection{Geometric sequence}
+A geometric sequence is given by the recurrence:
+\[
+\forall n \in \N, a_n=
+\begin{cases}
+a, & \text{if } n=0\\
+ra_{n-1}, & \text{otherwise}
+\end{cases}
+\]
+where $a, r$ are real constants. The explicit formula is $a_n = ar^n, \forall n \in \N$.\\\\
+The sum of the first $n$ terms is defined as $S_n = \sum\limits_{i=0}^{n-1} a_i$, and this sequence has the explicit closed form formula:
+\begin{center}
+	$S_n = \frac{a(r^n-1)}{r-1}, \forall n \in \N$, and $a,r \in \R$, $r \neq 1$.
+\end{center}
+For the case where $|r|<1$, the sum to infinity is convergent, and is $S_\infty = \frac{a}{1-r}$
+
+\subsection{Square numbers}
+The square numbers is the sequence of perfect square numbers, and the explicit formula is $\forall n \in \N$, $\square_n = n^2$.\\\\
+$\square_n$ also happens to equal the sum of the first $n$ odd numbers.
+\subsection{Triangle numbers}
+The triangle numbers is the sequence with the explicit formula $\forall n \in \N$, $\triangle_n = \frac{n(n+1)}{2}$, where $\triangle_n$ is equal to the sum of the first $n+1$ integers.
+\subsection{Fibonacci numbers}
+The Fibonacci sequence is defined recursively as:
+\[
+\forall n \in \N, F_n=
+\begin{cases}
+0, & \text{if } n=0\\
+1, & \text{if } n=1\\
+F_{n-1} + F_{n-2}, & \text{otherwise}
+\end{cases}
+\]
+The explicit formula is given by 
+\begin{center}
+	$\forall n \in \N$, $F_n = \frac{\phi^n - (-\phi)^{-n}}{\sqrt{5}}$
+\end{center}
+where $\phi = \frac{1 + \sqrt{5}}{2} \approx 1.618034...$ is called the golden ratio.
+
+\subsection{Binomial numbers}
+The binomial numbers is the triangular sequence called Pascal's triangle or Yang Hui's triangle.\\
+The explicit formula is:
+\begin{center}
+	$\forall n, r \in \N$ such that $r \le n$, ${n\choose r} = \frac{n!}{r!(n-r)!}$
+\end{center}
+Note that there are two values $n, r$, and this formula appears in combinatorics where we are choosing $r$ things from $n$ things.\\ \\
+The recurrence relation and initial conditions are:
+\[
+\forall n,r \in \N, {n\choose r}=
+\begin{cases}
+1, & \text{if } r=0 \text{and } n\ge 0\\
+{n-1\choose r} + {n-1\choose r-1}, & \text{if } 0<r\le n\\
+0, & \text{otherwise}
+\end{cases}
+\]
+Also, the sum of all possible ways to choose $r$ things from $n$ is $2^n$, expressed as shown:
+\begin{center}
+	$\sum\limits_{r=0}^{n}{n\choose r} = 2^n$
+\end{center}
+
+\section{Solving recurrences}
+Given a recurrence relation with initial conditions we wish to solve it to obtain an explicit closed form formula. We can:
+\begin{enumerate}
+	\item Consult math tables
+	\item Guess and check
+	\item Use formulae
+\end{enumerate}
+Consulting math tables isn't interesting in our discussion here, so we will only take a look into the other two.
+\subsection{Guess and check}
+Starting from the initial conditions, we can use the given recurrence relation to calculate the first few terms, and note any pattern that emerges. From there we will need to guess the corresponding formula, and check it using mathematical induction.\\\\
+Guessing and checking tends to work best for simple recurrence relations, and thus becomes substantially more difficult with more complex recurrence relations, such as the Fibonacci sequence.
+\subsection{Using formulae}
+We first define the following:\\
+A \textbf{second-order linear homogeneous recurrence relation with constant coefficients} is a recurrence relation of the form
+\begin{center}
+	$a_k = Aa_{k-1} + Ba_{k-2}$, $\forall k\in \Z_{\ge k_0}$
+\end{center}
+where $A,B$ are real constants, $B\neq 0$, and $k_0$ is an integer constant.
+\begin{itemize}
+	\item \textit{Second-order} means the recurrence relation goes up to $a_{k-2}$
+	\item \textit{Linear} means the highest power of $(a_{k-r})^m$ is $m=1$.
+	\item \textit{Homogenous} means $C=0$ in the more general case:
+	\begin{center}
+		$a_k = Aa_{k-1} + Ba_{k-2} + C$, $\forall k\in \Z_{\ge k_0}$
+	\end{center}
+	\item \textit{Constant coefficients} means that $A$ and $B$ do not depend on $k$.
+\end{itemize}
+For recurrence relations of this form, we can then simply use the Distinct-Roots/Single-Root Theorem to solve for the explicit closed form formula.
+
+\newpage
+\appendix
+\section{Theorems}
+\begin{enumerate}
+	\item[] Theorem 5.1.1 (Epp) - If $a_m, a_{m+1}, \dots$ and $b_m, b_{m+1}, \dots$ are sequences of real numbers, and $c$ is any real number, then the following equations hold for any integer $n \ge m$:
+	\begin{enumerate}
+		\item $\sum\limits_{k=m}^{n}a_k + \sum\limits_{k=m}^{n}b_k = 
+		\sum\limits_{k=m}^{n}(a_k + b_k)$
+		\item
+		$c\cdot \sum\limits_{k=m}^{n}a_k = 
+		\sum\limits_{k=m}^{n}(c \cdot a_k)$
+		\item
+		$(\prod\limits_{k=m}^{n}a_k)\cdot (\prod\limits_{k=m}^{n}b_k) = (\prod\limits_{k=m}^{n}a_k \cdot b_k)$
+	\end{enumerate}
+	\item[] Theorem 5.8.3 (Epp) Distinct-Roots Theorem - Suppose a sequence $a_0, a_1, \dots$ satisfies a recurrence relation 
+	\begin{center}
+		$a_k = Aa_{k-1} + Ba_{k-2}$
+	\end{center}
+	where $A,B$ are real constants, $B\neq 0$, and $k \in \Z_{\ge2}$. If the \textbf{characteristic equation}
+	\begin{center}
+		$t^2 - At - B = 0$
+	\end{center}
+	has two distinct roots $r$ and $s$, then $a_0, a_1,\dots$ is given by the explicit formula 
+	\begin{center}
+		$a_n = Cr^n + Ds^n$, $\forall n \in \N$
+	\end{center}
+	where $C, D$ are real numbers determined by the initial conditions $a_0, a_1$.
+	\item[] Theorem 5.8.5 (Epp) Single-Root Theorem - Suppose a sequence $a_0, a_1, \dots$ satisfies a recurrence relation 
+	\begin{center}
+		$a_k = Aa_{k-1} + Ba_{k-2}$
+	\end{center}
+	where $A,B$ are real constants, $B\neq 0$, and $k \in \Z_{\ge2}$. If the \textbf{characteristic equation}
+	\begin{center}
+		$t^2 - At - B = 0$
+	\end{center}
+	has a single real root $r$, then $a_0, a_1,\dots$ is given by the explicit formula 
+	\begin{center}
+		$a_n = Cr^n + Dnr^n$, $\forall n \in \N$
+	\end{center}
+	where $C, D$ are real numbers determined by $a_0$ and any other known value of the sequence.
+\end{enumerate}
+
+
+
+
+\end{document}

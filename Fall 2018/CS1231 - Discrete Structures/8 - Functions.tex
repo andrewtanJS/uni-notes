@@ -1,0 +1,76 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 8 - Functions  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Functions}
+Let $f$ be a relation such that $f \subseteq S \times T$. Then $f$ is a \textbf{function} from $S$ to $T$, denoted $f$ : $S \rightarrow T$ iff
+\begin{center}
+	$\forall x \in S, \exists y \in T$ $(x$ $f$ $y\land (\forall z \in T$ $(x$ $f$ $z \rightarrow y = z)))$
+\end{center}
+Essentially, for a relation to be a function, each input to the function must only have one output.\\ \\
+Let $f$ : $S\rightarrow T$ be a function. We can also write $f(x) = y$ (or $x\mapsto y$) iff $(x,y) \in f$. We say that $x$ \textit{maps} to $y$.\\ \\
+We will note a few more definitions:\\
+Let $f$ : $S \rightarrow T$ be a function.
+\begin{itemize}
+	\item Let $x\in S$. Let $y \in T$ such that $f(x) = y$. Then $x$ is called a \textbf{pre-image} of $y$.
+	\item Let $y \in T$. The \textbf{inverse image} of $y$ is the set of all its pre-images: $\{x \in S$ | $f(x) = y\}$
+	\item Let $U \subseteq T$. The \textbf{inverse image} of $U$ is the set that contains all the pre-images of all elements of $U$: $\{x \in S$ | $\exists y \in U,$ $f(x) = y\}$
+	\item Let $V \subseteq S$. The \textbf{restriction} of $f$ to $U$ is the set: $\{(x,y) \in V \times T$ | $f(x) = y\}$
+\end{itemize}
+
+\section{Properties}
+\subsection{Injective}
+Let $f$ : $S \rightarrow T$ be a function. $f$ is \textbf{injective} iff 
+\begin{center}
+	$\forall y \in T, \forall x_1, x_2 \in S$ $((f(x_1) = y\land f(x_2) = y) \rightarrow x_1 = x_2)$
+\end{center}
+This implies that every value in $T$ has \textit{at most} one value in $S$ that maps to it.
+\subsection{Surjective}
+Let $f$ : $S \rightarrow T$ be a function. $f$ is \textbf{surjective} iff
+\begin{center}
+	$\forall y \in T$, $\exists x \in S$ $(f(x) = y)$
+\end{center}
+We also say that $f$ is a \textbf{surjection} or that $f$ is \textbf{onto}.\\
+This implies that every value in $T$ has \textit{at least} one value in $S$ that maps to it.
+\subsection{Bijective}
+Let $f$ : $S\rightarrow T$ be a function. $f$ is \textbf{bijective} iff $f$ is injective and $f$ is surjective. We also say that $f$ is a \textbf{bijection}.\\ \\
+Combining the two, this essentially states that every value in $T$ has \textit{exactly} one value in $S$ that maps to it.
+\subsection{Inverse}
+Let $f$ : $S \rightarrow T$ be a function and let $f^{-1}$ be the inverse relation of $f$ from $T$ to $S$. Then $f$ is a bijective iff $f^{-1}$ is a function.
+
+\section{Composition}
+Let $f$ : $S\rightarrow T$ be a function. Let $g$ : $T \rightarrow U$ be a function. The composition of $f$ and $g$, denoted as $g \circ f$, is a function from $S$ to $U$.\\\\
+We also denote $(g\circ f)(x)$ to mean $g(f(x))$.
+
+\subsection{Identity}
+Given a set $A$, we can define a function $\mathcal{I}_A$ from $A$ to $A$ by:
+\begin{center}
+	$\forall x \in A$ $(\mathcal{I}_A(x) = x)$
+\end{center}
+This is the \textbf{identity function} on $A$.\\ \\
+Let $f$ : $A \rightarrow A$ be an injective function on $A$. Then $f^{-1} \circ f = \mathcal{I}_A$.
+
+\subsection{Generalization}
+We've explored functions that take in a single argument. We can generalize functions to accept two or more arguments simply by making the domain a Cartesian product.\\ \\
+For example, let $f$ : $A \times B \rightarrow C$ be a function. Then the argument to $f$ is an ordered pair $(a,b)$ where $a \in A$ and $b \in B$. Hence we can write $f((a,b))$ which we simplify to $f(a,b)$.\\ \\
+Likewise, let $g$ : $A \times B \times C \rightarrow D$ be a function. Then we will write $g(a,b,c)$. In this way, we can allow functions to accept any finite number of arguments.\\ \\
+Finally, we may also allow functions to return "multiple values" by making the co0domain a Cartesian product.
+
+
+
+\end{document}

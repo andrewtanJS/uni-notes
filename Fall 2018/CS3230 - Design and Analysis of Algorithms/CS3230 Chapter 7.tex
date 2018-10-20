@@ -85,42 +85,37 @@ Thus, we must have $e\in U$, and thus $T + \{e\}$ is promising.
 \subsubsection{Implementations}
 \textbf{DFS}:\\
 We can use a DFS to check if $\{e\} + T$ contains a cycle, before inserting it into $T$.
-\begin{enumerate} \itemsep0em
-	\item Let $T$ be the empty set
-	\item Sort the set of edges in increasing order and store them in an array $E$.
-	\item Initialize $count$ to 0
-	\item Repeat
-	\begin{enumerate}
-		\item $count = count + 1$
-		\item $e = E[count]$
-		\item Using DFS, check if $\{e\} + T$ contains a cycle. If there is no cycle, insert $e$ into $T$.
-	\end{enumerate}
-	Until $|T| == n-1$ where $n$ is the number of vertices in the graph.
-\end{enumerate}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Kruskal-DFS((*$G, w$*)):
+(*$T = \emptyset$*)
+sort the edges of (*$G.E$*) into nodecreasing order by weight (*$w$*)
+for each edge (*$(u,v) \in G.E$*), taken in nondecreasing order by weight:
+	using DFS, check if (*$\{(u,v)\}$*) contain a cycle, if there is no cycle, insert the edge (*$(u,v)$*) into (*$T$*).
+return (*$T$*)
+\end{lstlisting}
 Sorting will simply take $|E| log |E|$. Here, the running time of DFS is in $\Theta(|V|)$, since the number of edges in a tree can't be more than $|V| - 1$. In the worst case, the number of DFS calls is in $\Theta(|E|)$, so the running time is in $\Theta(|E||V|)$.\\\\
 \textbf{Disjoint Set}:\\
 A disjoint set data structure maintains a collection of disjoint sets \{$S_1, S_2, \dots, S_k$\}. Each set $S_i = \{a_1,a_2,\dots,a_m\}$ is identified by a representative which can be any element in the set.\\\\
 The data structure supports three operations:
 \begin{enumerate}
-	\item Create\_set($x$): Creates a set \{$x$\}.
-	\item Find\_set($x$): Finds the set containing $x$ and returns the representative of this set.
+	\item Create-Set($x$): Creates a set \{$x$\}.
+	\item Find-Set($x$): Finds the set containing $x$ and returns the representative of this set.
 	\item Union($x, y$): Merges the two sets which contain $x$ and $y$ respectively and returns the representative of this combined set.
 \end{enumerate}
 We can implement this with a data-structure known as union by rank with path compression.\\\\
 Back to Kruskal's algorithm, we can use our disjoint set to implement this algorithm:
-\begin{enumerate} \itemsep0em
-	\item Let $T$ be the empty set
-	\item Sort the set of edges in increasing order and store them in an array $E$.
-	\item For each $v\in V$, create a set \{$v$\}.
-	\item Initialize $count$ to 0
-	\item Repeat
-	\begin{enumerate}
-		\item $count = count + 1$
-		\item $\{v,u\} = E[count]$
-		\item Find the set containing $v$, and the set containing $u$. If $v$ and $u$ are not in the same set, then insert \{$v,u$\} into $T$, and merge the two sets containing $v$ and $u$.
-	\end{enumerate}
-	Until $|T| == n$ where $n$ is the number of vertices in the graph.
-\end{enumerate}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Kruskal-Disjoint-Set((*$G, w$*)):
+(*$T = \emptyset$*)
+for each vertex (*$v \in G.V$*):
+	Make-Set((*$v$*))
+sort the edges of (*$G.E$*) into nodecreasing order by weight (*$w$*)
+for each edge (*$(u,v) \in G.E$*), taken in nondecreasing order by weight:
+	if Find-Set((*$u$*)) (*$\neq$*) Find-Set((*$v$*)):
+		(*$T = T\cup \{(u,v)\}$*)
+		Union((*$u,v$*))
+return (*$T$*)
+\end{lstlisting}
 With our disjoint set, the running time of $m$ operations on $n$ elements is in $O(m\alpha(n))$, where $n$ is the number of elements in the data-structure, and $\alpha(n)$ is an extremely slow-growing function ($\alpha(n) \approx log^*n$).\\\\
 Using this, our running time is improved accordingly, with sorting taking $\Theta(|E|log|E|)$, and our number of set operations are less than $3|E|$. Since $3|E|\alpha(|V|) \in O(|E|log|E|)$, our runnning time of Kruskal's algorithm is now $\Theta(|E|log|E|)$.
 
@@ -146,8 +141,7 @@ Thus, we must have $e\in U$, and thus $T + \{e\}$ is promising.
 \textbf{Storing edges in a heap}:\\
 A sketch of the algorithm is as follows:
 \begin{enumerate} \itemsep0em
-	\item Let $T$ be the empty set
-	\item Let $H$ be an empty heap
+	\item Let $T$ be the empty set, and let $B$ be an empty heap
 	\item Let $B$ be the set {$v$}, where $v$ is any vertex in $V$
 	\item For each $u$ adjacent to $v$, insert the weight of ${v,u}$ into the heap (the directed edge ($v,u$ ) is stored as the data)
 	\item Repeat
@@ -184,5 +178,38 @@ We can in fact improve our vertices implementation of Prim's algorithm using Fib
 \end{itemize}
 The discussion on amortized time is in a later chapter, but for now it can be thought of as roughly the average time of each operation in a sequence of operations.\\\\
 Using the Fibonacci heaps, our vertices implementation for Prim's algorithm runs in $O(|V|log|V|+|E|)$ time.
+
+\section{Single-Source Shortest-Path}
+Given a weighted directed graph $G = (V,E)$ and $s \in V$, we want to find the shortest path from $s$ to every vertex $v\in V$. We shall explore Dijkstra's algorithm to solve the problem in the case where the graph contains only edges of non-negative weights.\\\\
+Before we get started on Dijkstra's algorithm, we shall introduce a few helpful functions and terminology. For each vertex $v\in V$, we maintain an attribute $v.d$ which is an upper bound on the weight of a shortest path from source $s$ to $v$. We call $v.d$ a shortest-path estimate. We can initialize the shortest-path estimates accordingly:
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Initialize-Single-Source((*$G, s$*)):
+for each vertex (*$v \in G.V$*):
+	(*$v.d = \infty$*)
+	(*$v.\pi = NIL$*)
+(*$s.d = 0$*)
+\end{lstlisting}
+Initializing the shortest path estimates and predecessors with this algorithm takes $\Theta(V)$ time.\\\\
+The process of \textbf{relaxing} an edge ($u,v$) consists of testing whether we can improve the shortest path to $v$ found so far by going through $u$ and, if so, updating $v.d$ and $v.\pi$.
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Relax((*$u, v, w$*)):
+if (*$v.d > u.d + w(u,v)$*):
+	(*$v.d = u.d + w(u,v)$*)
+	(*$v.\pi = u$*)
+\end{lstlisting}
+The above code performs a relaxation step on edge ($u,v$) in $O(1)$ time.\\\\
+Assuming all edge weights are non-negative, we can thus use \textbf{Dijkstra's algorithm} to find the single-source shortest-path.
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Dijkstra((*$G, w, s$*)):
+Initialize-Single-Source((*$G,s$*))
+(*$S=\emptyset$*)
+(*$Q=G.V$*)
+while (*$Q\neq \emptyset$*):
+(*$u$*) = Extract-Min((*$Q$*))
+(*$S = S\cup \{u\}$*)
+for each vertex (*$v \in G.Adj[u]$*):
+Relax((*$u,v,w$*))
+\end{lstlisting}
+Notice that Dijkstra's algorithm resembles Prim's algorithm. Likewise, the running time for Dijkstra's algorithm is the same and is in $\Theta(|E| + |V| log(|V|))$.
 
 \end{document}

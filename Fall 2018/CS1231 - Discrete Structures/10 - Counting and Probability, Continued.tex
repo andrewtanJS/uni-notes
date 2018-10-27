@@ -1,0 +1,198 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS1231 Part 10 - Counting and Probability, Continued  \\
+	\large Based on lectures by Terence Sim and Aaron Tan
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Combinations}
+\textbf{Combinations} refer to the various ways in which objects may be selected in a set, ignoring order. Each subset of size $r$ of a given set is called an \textbf{r-combination} of the set.\\\\
+More formally, let $n$ and $r$ be non-negative integers with $r\le n$. An \textbf{r-combination} of a set of $n$ elements is a subset of $r$ of the $n$ elements.\\\\
+$n\choose r$, read as "$n$ choose $r$", denotes the number of subsets of size $r$ that can be chosen from a set of $n$ elements. We can also denote it by $C(n,r)$, $\comb{n}{r}$
+
+\subsection{Relationship between permutations and combinations}
+Recall that an $r$-permutation of a set of $n$ elements is an ordered selection of $r$ elements from the set. We can think of constructing an $r$-permutation of a set of $n$ elements in 2 steps:
+\begin{enumerate}
+	\item Choose a subset of $r$ elements from the set.
+	\item Choose an ordering for the $r$-element subset.
+\end{enumerate}
+The number of ways to perform step 1 is $n \choose r$, and the number of ways to perform step 2 is $r!$. Hence, we obtain the equation:
+\begin{center}
+	$P(n,r) = {n \choose r} \times r!$
+\end{center}
+Thus, the number of subsets of size $r$ that can be chosen from a set of $n$ elements, $n\choose r$, is given by the formula
+\begin{center}
+	${n\choose r} = \frac{n!}{r!(n-r)!}$
+\end{center}
+Note that this implies that
+\begin{center}
+	${n\choose r} = {n\choose n-r}$
+\end{center}
+We can interpret this by saying that a set $A$ with $n$ elements has exactly as many subsets of size $r$ as it has subsets of size $n-r$.
+
+\subsection{Permutations of a set with repeated elements}
+Suppose a collection consists of $n$ objects of which
+\begin{itemize}
+	\item[] $n_1$ are of type 1 and are indistinguishable from each other
+	\item[] $n_2$ are of type 2 and are indistinguishable from each other
+	\item[] $\dots$
+	\item[] $n_k$ are of type $k$ and are indistinguishable from each other 
+\end{itemize}
+and suppose that $n_1 + n_2 + \dots + n_k = n$. Then the number of distinguishable permutations of the $n$ objects is
+\begin{center}
+	${n\choose n_1}{n-n_1\choose n_2}{n-n_1-n_2\choose n_3}\dots{n-n_1-n_2-\dots-n_{k-1}\choose n_k} = \frac{n!}{n_1!n_2!n_3!\dots n_k!}$
+\end{center}
+Essentially, for each type $i$, we are choosing a subset of $n_i$ positions from the number of remaining positions available.
+
+\section{Multisets}
+\textbf{Multisets} are combinations with repetition allowed. More formally, a multiset of size $r$, chosen from a set $X$ of $n$ elements, is an unordered selection of elements taken from $X$ with repetition allowed.\\\\
+If $X=\{x_1, x_2,\dots,x_n\}$, we write a multiset as $[x_{i_1}, x_{i_2}, \dots, x_{i_r}]$, where each $x_{i_j}$ is in $X$ and some of the $x_{i_j}$ may equal each other.\\\\
+The number of multisets of size $r$ that can be selected from a set of $n$ elements is:
+\begin{center}
+	$r+n-1\choose r$
+\end{center}
+To understand this, consider the numbers $1,2,3,4$ in $\{1,2,3,4\}$ as categories, and imagine choosing a total of $3$ numbers from the categories with multiple selections from any category allowed.
+\begin{center}
+\begin{tabular}{ | m{2cm} | m{2cm} m{0.1cm} m{2cm} m{0.1cm} m{2cm} m{0.1cm} m{2cm} | }
+	\hline
+	& Category 1 && Category 2 && Category 3 && Category 4 \\
+	\hline
+	$[1,1,1]$: & xxx &|& &|& &|& \\ 
+	\hline
+	$[1,3,4]$: & x &|& &|& x &|& x \\
+	\hline
+	$[2,4,4]$: & &|& x &|& &|& xx\\
+	\hline
+\end{tabular}
+\end{center}
+Hence, we may write $[1,1,1]$ as "$xxx|||$, $[1,3,4]$ as "$x||x|x$, and $[2,4,4]$ as "$|x||xx$. Thus, finding the number of multisets of size 3 is the same as ${4 + 3 - 1 \choose 3} = {6\choose 3}$.\\\\
+
+\subsection{Using the appropriate formula}
+As we have discussed permutations and combinations, we shall summarize the different cases and the corresponding formulas as shown
+\begin{center}
+\begin{tabular}{ | m{4cm} | m{4cm} m{4cm} | }
+	\hline 
+	& order Matters & order does not matter\\
+	\hline
+	Repetition is allowed & $n^k$ & $r+n-1\choose r$\\
+	Repetition is not allowed & $P(n,k)$ & $n\choose k$\\
+	\hline	
+\end{tabular}
+\end{center}
+
+\section{Pascal's Formula and the Binomial Theorem}
+Suppose $n$ and $r$ are positive integers with $r\le n$. Then Pascal's formula denotes the following:
+\begin{center}
+	${n+1\choose r} = {n \choose r-1} + {n\choose r}$
+\end{center}
+Pascal's triangle is a geometric version of Pascal's forumla:\\
+\begin{center}
+	\begin{tabular}{>{$}l<{$}|*{7}{c}}
+		\multicolumn{1}{l}{$n$} &&&&&&&\\\cline{1-1} 
+		0 &1&&&&&&\\
+		1 &1&1&&&&&\\
+		2 &1&2&1&&&&\\
+		3 &1&3&3&1&&&\\
+		4 &1&4&6&4&1&&\\
+		5 &1&5&10&10&5&1&\\
+		6 &1&6&15&20&15&6&1\\\hline
+		\multicolumn{1}{l}{} &0&1&2&3&4&5&6\\\cline{2-8}
+		\multicolumn{1}{l}{} &\multicolumn{7}{c}{$k$}
+	\end{tabular}
+\end{center}
+Notice how Pascal's formula is easily visualized through the triangle.\\\\
+Furthermore, we can use Pascal's formula to continuously derive a formula for other values by substitution. For example,
+\begin{center}
+	${n+2\choose r} = {n+1\choose r-1} + {n+1\choose r} = [{n\choose r-2} + {n\choose r-1}] + [{n\choose r-1} + {n\choose r}] = {n\choose r-2} + 2{n\choose r-1} + {n\choose r}$
+\end{center}
+
+\subsection{Binomial theorem}
+In algebra, the sum of two terms, such as $a+b$, is called a binomial. The binomial theorem gives an expression for the powers of a binomial $(a+b)^n$, for each positive integer $n$ and all real numbers $a$ and $b$.\\\\
+More formally, the binomial theorem states that given any real numbers $a$ and $b$ ad any non-negative integer $n$,
+\begin{center}
+	$(a+b)^n = \sum\limits_{k=0}^{n}{n\choose k}a^{n-k}b^k = a^n + {n\choose 1}a^{n-1}b^1 + {n\choose 2}a^{n-2}b^2 + \dots + {n\choose n-1}a^1b^{n-1} + b^n$
+\end{center}
+
+\section{Probability Axioms and Expected Value}
+Recall that a sample space is a set of all outcomes of a random process or experiment, and that an event is a subset of a sample space.\\\\
+Now let $S$ be a sample space. A \textbf{probability function} $P$ from the set of all event in $S$ to the set of real numbers satisfies the following \textbf{probability axioms}: For all events $A$ and $B$ in $S$,
+\begin{enumerate}
+	\item $0\le P(A)\le 1$
+	\item $P(\emptyset) = 0$ and $P(S) = 1$
+	\item If $A$ and $B$ are disjoint (i.e. $A\cap B = \emptyset$), then $P(A\cup B) = P(A) + P(B)$.
+	\item $P(A^c) = 1 - P(A)$
+	\item If $A$ and $B$ are any events in a sample space $S$, then $P(A\cup B) = P(A) + P(B) + P(A\cap B)$.
+	\item If $A\subseteq B$, then $P(B-A) = P(B) - P(A)$.
+\end{enumerate}
+
+\subsection{Expected Value}
+Suppose the possible outcomes of an experiment, or random process, are real numbers $a_1, a_2, a_3, \dots, a_n$ which occur with probabilities $p_1, p_2, p_3, \dots, p_n$. The \textbf{expected value} of the process is
+\begin{center}
+	$\sum\limits_{k=1}^{n}a_kp_k=a_1p_1+a_2p_2+a_3p_3+\dots+a_np_n$
+\end{center}
+\subsubsection{Linearity of Expectation}
+The expected value of the sum of random variables is equal to the sum of their individual expected values, regardless of whether they are independent. For random variables $X$ and $Y$ (which may be dependent),
+\begin{center}
+	$E[X+Y] = E[X] + E[Y]$
+\end{center}
+More generally, for random variables $X_1, X_2, \dots,X_n$ and constants $c_1, c_2,\dots,c_n$,
+\begin{center}
+	$E[\sum\limits_{i=1}^{n}c_iX_i] = \sum\limits_{i=1}^{n}(c_iE[X_i])$
+\end{center}
+In essence, we can think of expectation as a linear function.
+
+\section{Conditional Probability}
+Let $A$ and $B$ be events in a sample space $S$. If $P(A) \neq 0$, then the \textbf{conditional probability of $B$ given $A$}, denoted $P(B|A)$, is 
+\begin{center}
+	$P(B|A) = \frac{P(A\cap B)}{P(A)}$
+\end{center}
+
+\subsection{Bayes' Theorem}
+Suppose that a sample space $S$ is a union of mutually disjoint events $B_1,B_2,B_3,\dots,B_n$. Suppose $A$ is an event in $S$, and suppose $A$ and all the $B_i$ have non-zero probabilities. If $k$ is an integer with $1\le k\le n$, then
+\begin{center}
+	$P(B_k|A) = \frac{P(A|B_k)\cdot P(B_k)}{P(A|B_1)\cdot P(B_1) + P(A|B_2)\cdot P(B_2)+\dots+P(A|B_n)\cdot P(B_n)}$
+\end{center}
+
+\subsection{Independent Events}
+If two events $A$ and $B$ are \textbf{independent}, then the probability of one occuring shouldn't affect the probability of the other occuring. More succinctly,
+\begin{itemize}
+	\item[] $P(A|B) = P(A)$
+	\item[] $P(B|A) = P(B)$
+\end{itemize}
+Furthermore, $A$ and $B$ are independent if and only if
+\begin{center}
+	$P(A\cap B) = P(A) \cdot P(B)$
+\end{center}
+
+\subsection{Pairwise independence/Mutually independent}
+We say that three events $A$, $B$, and $C$ are \textbf{pairwise independent} if and only if
+\begin{itemize}
+	\item[] $P(A\cap B) = P(A) \cdot P(B)$
+	\item[] $P(A\cap C) = P(A) \cdot P(C)$
+	\item[] $P(B\cap C) = P(B) \cdot P(C)$
+\end{itemize}
+Events can be pairwise independent without satisfying the condition $P(A\cap B\cap C) = P(A) \cdot P(B) \cdot P(C)$. Conversely, they can satisfy the condition $P(A\cap B\cap C) = P(A) \cdot P(B) \cdot P(C)$ without being pairwise independent.\\\\
+We extend the definition to include \textbf{mutual independence} as follows:\\
+Let $A$, $B$, and $C$ be events in a sample space $S$. $A$, $B$, and $C$ are \textbf{pairwise independent} if and only if they satisfy conditions $1-3$ below. They are \textbf{mutually independent} if and only if they satisfy all four conditions below.
+\begin{itemize}
+	\item[] $P(A\cap B) = P(A) \cdot P(B)$
+	\item[] $P(A\cap C) = P(A) \cdot P(C)$
+	\item[] $P(B\cap C) = P(B) \cdot P(C)$
+	\item[] $P(A\cap B\cap C) = P(A) \cdot P(B) \cdot P(C)$
+\end{itemize}
+We can also generalize the definition of mutual independence as follows:\\
+Events $A_1, A_2,\dots,A_n$ in a sample space $S$ are \textbf{mutually independent} if and only if the probability of the intersection of any subset of the events is the product of the probabilities of the events in the subset.
+
+\end{document}

@@ -1,0 +1,134 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS3230 Chapter 2 - Simple Sorting and Searching \\
+	\large Based on lectures by Chang Ee-Chien
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Simple Sorting}
+Sorting algorithms are a group of algorithms that puts elements of a given input list in a certain order.\\
+For analysis of sorting algorithms, the elementary operations obtained are the number of comparisons and the number of swaps made, with the input size being the number of elements to be sorted.\\ 
+As the data being sorted may require a relatively large amount of resources to store, we primarily consider only the comparison and movement of this data, as opposed to other operations on control variables.
+
+\subsection{Selection Sort}
+Selection sort repeatedly moves the smallest element from the input to the front.
+
+\begin{lstlisting}[escapeinside={(*}{*)}]
+for (*$i\leftarrow1$*) to (*$N-1$*):
+	(*$min \leftarrow i$*)
+	for (*$j\leftarrow i+1$*) to (*$N$*):
+		if (*$a[j]<a[min]$*):
+			(*$min\leftarrow j$*)
+	(*$t\leftarrow a[min]$*)
+	(*$a[min]\leftarrow a[i]$*)
+	(*$a[i] \leftarrow t$*)
+\end{lstlisting}
+\textbf{Complexity:}\\
+For comparisons,
+Inner loop performs $n-i$ comparisons.
+Outer loop performs $n-1$ loops.
+So,
+\begin{center}
+	$\sum_{i=i}^{n-1}n-1$
+	$=\frac{n^2-n}{2}$
+	$\in O(n^2)$
+\end{center}
+For data movements:
+Number of data movements: $(n-1)$\\
+Thus, number of comparisons $\in \Theta(n^2)$, and\\
+number of data movements $\in \Theta(n)$.
+
+\subsection{Insertion Sort}
+Insertion sort repeatedly picks an element from the input, and inserts it into its sorted position in the output subsequence.
+\begin{lstlisting}[escapeinside={(*}{*)}]
+for (*$i\leftarrow2$*) to (*$n$*):
+	(*$v \leftarrow a[i]$*)
+	(*$j\leftarrow i$*)
+	while (*$a[j-1]>v$*):
+		(*$a[j]\leftarrow a[j-1]$*)
+		(*$j\leftarrow j-1$*)
+	(*$a[j] \leftarrow v$*)
+\end{lstlisting}
+
+Correctness can be proven through mathematical induction, by considering the output subsequence before and after insertion.\\ \\
+\textbf{Complexity:}\\
+The while-loop itself is executed a variable number of times depending on the input instance.\\ \\
+Consider the worst and best cases:\\
+Worst case is if the input instance is in decreasing order, hence insertion sort will take at least $2 + 3 +...+ (n-1)$ comparisons.\\
+Best case is if the input instance is already sorted, so only one pass is needed through the input.\\
+Hence,
+number of comparisons in the worst case $\in \Omega(n^2)$, and\\
+number of comparisons in the best case $\in O(n)$.\\
+Also,
+number of data-movements in the worst case $\in \Theta(n^2)$
+
+\subsection{Lower Bound}
+Other sorting algorithms such as merge-sort and or heap-sort have an average and/or best case of $\Omega(n \log(n))$
+
+Comparison based sorting algorithms have a \textbf{lower bound} of $\Omega(n \log(n))$
+
+\section{Searching}
+A search algorithm is any algorithm which retrieves information stored within some data structure or calculated in the search space of a problem domain.
+\subsection{Binary Search}
+Binary search is a search algorithm that utilizes a divide-and-conquer approach to search for a value within a sorted input.
+\subsubsection{Recursive implementation}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+BinarySearch((*$A$*), (*$key$*), (*$l$*), (*$r$*)):
+	if (*$l>r$*) return NOT FOUND
+	(*$m \leftarrow \lfloor \frac{l+r}{2}\rfloor$*)
+	if (*$key==A[m]$*) return (*$m$*)
+	if (*$key<A[m]$*) return BinarySearch((*$A$*), (*$key$*), (*$l$*), (*$m-1$*))
+	if (*$key>A[m]$*) return BinarySearch((*$A$*), (*$key$*), (*$m+1$*), (*$r$*))
+\end{lstlisting}
+
+\subsubsection{Iterative implementation}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+BinarySearch((*$A$*), (*$key$*)):
+	(*$l \leftarrow 1$*); (*$r \leftarrow n;$*)
+	while (*$r \ge l$*):
+		(*$m \leftarrow \lfloor \frac{l+r}{2} \rfloor$*)
+		if (*$A[m]<key$*) then (*$l \leftarrow m+1$*)
+		if (*$A[m]>key$*) then (*$r \leftarrow m-1$*)
+		if (*$A[m] == key$*) then return (*$m$*)
+	return NOT FOUND;
+\end{lstlisting}
+
+\section{Additional Math Addendums}
+
+\subsection{Little-o}
+Let $f(n)$ and $g(n)$ be functions on $\Z_{+}$. We say that $f(n) \in o(g(n))$ if for any positive constants $c$, there exists positive constants $n_0$ such that $\forall n > n_0, f(n) \le cg(n)$.\\
+So, if $f(n) \in o(g(n))$, $f(n) \in O(g(n))$ and $f(n) \notin \Omega(g(n))$
+
+\subsection{Approximation}
+Often, we use $\approx$ to denote that if $f(n) \approx g(n)$ we can use $g(n)$ as an approximation of $f(n)$ in subsequent analysis without loss of generality.\\
+Thus, $f(n) \approx g(n)$ means that $f(n) = g(n) + o(g(n))$
+
+\(\Theta\)
+
+\subsection{Mathematical identities and formulae}
+\subsubsection{Sterling approximation}
+\begin{enumerate}
+	\item $\log_2 (n!) = n\log_2 (n) - n\log_2 (e) + O(\log_2 (n))$
+	\item $n! = \sqrt{2\pi n} (\frac{n}{e})^{n}(1 + \Theta(\frac{1}{n}))$
+	\item $\sqrt{2\pi}n^{n+\frac{1}{2}}e^{-n} \le n! \le en^{n+\frac{1}{2}}e^{-n}$
+\end{enumerate}
+\subsubsection{Series}
+\begin{enumerate}
+	\item $\sum_{i=0}^{n}x^{i} = 1 + x + x^{2} +... + x^{n} = \frac{1-x^{n+1}}{1-x}$ when $x\neq1$
+	\item $\sum_{i=0}^{\infty}x^{i} = 1 + x + x^{2} +... = \frac{1}{1-x}$ for $|x|<1$
+	\item $\sum_{k=0}^{n}\frac{1}{k} = 1 + \frac{1}{2} +... +\frac{1}{n} = \ln(n) + O(1)$
+\end{enumerate}
+
+\end{document}

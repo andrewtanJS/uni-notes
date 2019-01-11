@@ -1,0 +1,167 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS3230 Chapter 9 - NP-Completeness \\
+	\large Based on lectures by Chang Ee-Chien
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section{Decision problems}
+There are several types of algorithmic problems:
+\begin{enumerate}
+	\item \textbf{Decision problems} - The output is a binary bit $\{0,1\}$ representing the decision "YES" or "NO".
+	\item \textbf{Optimization problems} - There are many feasible solutions, and each solution is associated with some values. We wish to find the solution with the optimal value, and can either output
+	\begin{enumerate}
+		\item the optimal solution, or
+		\item the value of the optional solution.
+	\end{enumerate}
+	\item \textbf{Counting problems} - The output is a non-negative integer which counts the number of feasible solutions.
+\end{enumerate}
+
+Take the minimum spanning tree problem as an example. We can formulate the problem into any of the categories above:
+\begin{enumerate}
+	\item Our input is a graph and a value $b$. Does the graph contain a spanning tree with weight at most $b$?
+	\item 
+	\begin{enumerate}
+		\item What is the minimum spanning tree?
+		\item What is the weight of the minimum spanning tree?
+	\end{enumerate}
+	\item Our input is a graph and a value $b$. What is the number of spanning trees with weight less than $b$?
+\end{enumerate}
+We can also consider our decision problem algorithm as a test of membership. Consider a decision problem, and let $L$ be the set of input instances such that the output is "YES". Thus, an algorithm that solves the decision problem will correctly determine whether the input $x$ is in the set $L$.\\\\
+We often represent a decision problem as a set. If given a decision algorithm, that on input $x$, outputs "YES" if, and only if, $x\in L$, we say that the algorithm decides $L$. For example, for a decision algorithm that determines if an integer is prime, we can represent the decision problem as the set of all primes.
+
+\section{$\mathcal{P}$, Polynomial time algorithms}
+An algorithm is polynomial time if its worst-case running time is in $O(n^k)$ where $n$ is the size of the input, and $k$ is a constant independent of $n$.\\\\
+We consider polynomial time algorithms as "efficient".
+
+\subsection{Polynomial time problems}
+$\mathcal{P}$ is a collection of decision problems. A decision problem $L$ is in $\mathcal{P}$ if, and only if, there is a \textit{deterministic} polynomial time algorithm that decides $L$.\\\\
+We can view $\mathcal{P}$ as the collection of problems that can be efficiently solved. For example, let $K$ be the set of weighted graphs whose minimum spanning tree have a weight of less than some constant $a$. As finding the minimum spanning tree of a graph takes polynomial time, we say that $K \in \mathcal{P}$.\\\\
+While an algorithm with $\Theta(n^{100})$ may seem slow, it turns out that there are many important problems where the best known algorithms have non-polynomial time.
+Furthermore, if we find a polynomial time algorithm for a problem, it is usually possible to reduce the size of the polynomial through the discovery of more efficient algorithms. Finally, polynomials are closed under addition, multiplication, and composition, so if we compose multiple polynomial algorithms together, we will still have a polynomial time algorithm.
+
+\section{$\mathcal{NP}$, Non-deterministic Polynomial time algorithms}
+Oftentimes, it is tough to find the solution or decide whether an instancec has a solutions. However, if the solution is found, one can easily verify that the solution is correct.\\\\
+For example, it is difficult to factorize an integer, but if given the solution, it is easy to verify it. We can view problems whose solutions are easy to verify as non-deterministic polynomial.
+
+\subsection{Non-deterministic polynomial time problems}
+$\mathcal{NP}$ is a collection of decision problems. A decision problem $K$ is in $\mathcal{NP}$ if, and only if, there exists a $Q \in \mathcal{P}$ and polynomial $p()$ such that:\\ $x \in K$ if, and only if, there exists a $y$ where $|y|$ where $|y|<p(|x|)$ and $\langle x,y \rangle \in Q$.\\\\
+In the above definition, $|y|$ refers to the number of bits required to represent $x$. Furthermore, the $y$ in the definition is known as the "\textbf{proof}" or the "\textbf{witness}". It is the witness that the element $x$ is in $K$.\\\\
+We can also view $y$ as the solution of a problem, while the decision problem is on whether the instance has a solution. The solution $y$ is a proof that the instance $x$ indeed has a solution. Furthermore, $|y|<p(|x|)$ refers to the proof being short, and $\langle x,y \rangle \in Q$ refers to the proof being able to be efficiently verified by computing $Q$.\\\\
+In essence, $x \in K$ if, and only if, there exists a short proof that can be verified in polynomial time.
+
+\subsubsection{An example}
+Let $K$ be the set of non-primes. We claim that $K \in \mathcal{NP}$.\\\\
+Proof:
+\begin{enumerate}
+	\item let $Q$ be the set of $\langle x,y \rangle$, where $x$ is divisible by $y$. $Q = \{\langle 4, 2\rangle, \langle 6, 2\rangle, \langle 9, 3\rangle, \dots\}$.
+	\item By definition of non-primes, a number $x \in K$ if, and only if, there exists a $y > 1$ such that $x$ is divisible by $y$.
+	\item Let's take the above $y$ as the witness. Since $y<x$, then $|y| < |x|$. Also, $x \in K$ if, and only if, there exists a $y$ such that $\langle x,y \rangle \in Q$.
+	\item Since $Q \in P$, all conditions in the definition are made. Thus $K \in \mathcal{NP}$.
+\end{enumerate}
+For example, 135 is not a prime because there exists a witness $y=5$, and $\langle 135, 5\rangle \in Q$. Furthermore, the witness is short and easily verified.
+
+\section{$\mathcal{P} = \mathcal{NP}$}
+We have the following theorem: $\mathcal{P} \subseteq \mathcal{NP}$.\\\\
+This theorem states that for any decision problem that can be decided in polynomial time, its witness can also be verified in polynomial time. Essentially, if the solution can be found in polynomial time, then the solution can be verified in polynomial time.\\\\
+Now, one of the most important questions in computer science is if $\mathcal{NP} \subseteq \mathcal{P}$? If this is true (which implies $\mathcal{NP} = \mathcal{P}$), then \textit{any} problem in $\mathcal{NP}$ can be solved efficiently.
+
+\section{Decision reducible}
+Suppose we have an algorithm that solves a $\mathcal{NP}$ decision problem, that is, given an input, it outputs "YES" or "NO" correctly. Using this algorithm, can we find the witness, if it exists?\\\\
+Let's call the algorithm an oracle. We say that a decision problem is \textbf{decision-reducible} if, given an "oracle" that solves the decision problem in $O(1)$ time, we can find the witness if polynomial time.
+
+\section{Polynomial time reduction}
+Suppose we have an algorithm $\mathcal{B}$ that "efficiently" solves a particular problem $B$. Can we use it to efficiently solve another problem $A$?\\\\
+We can view $\mathcal{B}$ as an oracle, and our job is now to use the oracle to solve $A$. If there is such an efficient algorithm $\mathcal{A}$ that uses $\mathcal{B}$ to solve $A$, we may make the following statements:
+\begin{itemize}
+	\itemsep0em
+	\item Problem $A$ is no harder than $B$,
+	\item $A$ is easier or equivalent to $B$,
+	\item $A \le B$,
+	\item Algorithm $\mathcal{A}$ reduces problem $A$ to $B$.
+\end{itemize}
+The above is a rough description. There are many different precise formulations of "reduction", and  decision reducability is one such type. The focus throughout the rest of the chapter will be on \textit{many-to-one reduction} $(\le_m)$ that is formulated for $\mathcal{NP}$.
+
+\subsection{Polynomial many-to-one reduction}
+Suppose an algorithm $\mathcal{B}$ can solve a given decision problem $B$ in polynomial time. We want to design an algorithm $\mathcal{A}$ that uses $\mathcal{B}$ to solve decision problem $A$.\\\\
+We can approach it in this way: given an input $x$ of problem $A$, we transform $x$ into an instance for $B$, and feed it as an input to $\mathcal{B}$. The output by $\mathcal{B}$ will be our output.\\\\
+We can fomalize this idea as such:
+\begin{itemize}
+	\item[] Let $A$ and $B$ be two decision problems. $A$ is many-to-one reducible to $B$ ($A\le_m B$), if there is a polynomial time algorithm that computes the transofrmation $T$ such that: $x\in A$ if, and only if, $T(x) \in B$.
+\end{itemize}
+We also obtain the following properties:
+\begin{itemize}
+	\item If $B \in \mathcal{NP}$ and $A\le_m B$, then $A \in \mathcal{NP}$. (This implies that many-to-one is a meaningful reduction for $\mathcal{NP}$ problems. If a harder problem $A$ is in $\mathcal{NP}$, then so is the easier problem $B$).
+	\item (transitivity) If $A \le_m B$ and $B \le_m C$, then $A \le_m C$.
+	\item (reflexivity) $A \le_m A$.
+	\item If $A \le_m B$ and $B \le_m A$, then we write $A =_m B$.
+\end{itemize}
+Recall that when $A \le_m B$, the efficient algorithm $\mathcal{A}$ uses $\mathcal{B}$ to solve $A$ in this way:
+\begin{enumerate}
+	\item First, transform $x$ into an instance for $B$.
+	\item Next, feed the transformed $y$ as an input to $\mathcal{B}$.
+	\item We output whatever the output of $\mathcal{B}$ is.
+\end{enumerate}
+Note that the algorithm $\mathcal{B}$ can be invoked at most once, and the output of $\mathcal{B}$ cannot be modified. If we remove the above restrictions, we obtain Turing reduction, written as $\le_T$ (which is outside the scope of this chapter).
+
+\subsection{Proving $A \le_m B$}
+Suppose we wish to prove that $A \le_m B$. The proof typically has the following structure:
+\begin{enumerate}
+	\item Describe a transformation $T$
+	\item Show that $x \in A \Rightarrow T(x) \in B$
+	\item Either show that 
+	\begin{enumerate}
+		\item $x \notin A \Rightarrow T(x) \notin B$, or
+		\item $T(x) \in B \Rightarrow x \in A$.
+	\end{enumerate}
+\end{enumerate}
+2 and 3 together implies that $x \in A \Leftrightarrow T(x) \in B$.
+
+\section{$\mathcal{NP}$-Completeness}
+We extend a few definitions:
+\begin{itemize}
+	\item[] \textbf{$\mathcal{NP}$-hard} - A decision problem $K$ is $\mathcal{NP}$-hard if $K \ge_m Y$ for every $Y \in \mathcal{NP}$.
+	\item[] \textbf{$\mathcal{NP}$-complete} / \textbf{$\mathcal{NP}$-C} - A decision problem $K$ is $\mathcal{NP}$-complete if
+	\begin{itemize}
+		\item $K \in \mathcal{NP}$, and
+		\item $K$ is $\mathcal{NP}$-hard.
+	\end{itemize}
+\end{itemize}
+An $\mathcal{NP}$-hard problem is not easier than any problem in $\mathcal{NP}$.\\\\
+If we can derive a polynomial time algorithm to solve a $\mathcal{NP}$-hard problem, then we can efficiently solve any problem in $\mathcal{NP}$. That is, $\mathcal{P}=\mathcal{NP}$. Inversely, if we can show that there is an $\mathcal{NP}$ problem that doesn't have a polynomial time algorithm, then we can show that $\mathcal{NP} \neq \mathcal{P}$.
+
+\subsection{Existence of $\mathcal{NP}$-C problems}
+The Cook-Levin theorem states that the boolean satisfiability problem is $\mathcal{NP}$-complete. Cook also showed that, given any problem $A$ in $\mathcal{NP}$, it is possible to convert its "verifier" into an instance in 3SAT. That is, reduce $A$ to 3SAT. In other words,s for any $A$ in $\mathcal{NP}$, $A \le_m$ 3SAT.\\\\
+We extend the following corollary: If $K\in \mathcal{NP}$, and $Y\le_m K$, where $Y$ is $\mathcal{NP}$-complete, then $K$ is $\mathcal{NP}$-complete.\\\\
+It turns out that many problems in $\mathcal{NP}$ are not easier than 3SAT. Thus, many problems are equivalent to 3SAT and are thus also $\mathcal{NP}$-C.
+
+\section{Approximation algorithms}
+If a problem is $\mathcal{NP}$-hard, we may still tackle the problem in several ways:
+\begin{itemize}
+	\itemsep0em
+	\item Use a fast algorithm that finds the solution for small input.
+	\item Use an algorithm that finds an approximate solution.
+	\item Use an algorithm that finds solutions for special types of instances.
+\end{itemize}
+In this section, we will focus on approximation algorithms.\\\\
+Let OPT be the cost of the optimal solution (minimizing cost). If we can find a solution with cost APR that is bounded above by APR < $\epsilon$ OPT, where $\epsilon$ is a constant greater than 1, then we say that the solution is a $\epsilon$-approximation solution, and the algorithm that finds the approximation solution is called the $\epsilon$-approximation algorithm.\\\\
+Unfortunately, it can be shown that there are problems that do not have approximation algorithms (unless $\mathcal{P} = \mathcal{NP}$)
+
+\appendix
+\section{Boolean satisfiability problem and 3SAT}
+The Boolean satisfiability problem is the problem of determining if there exists an interpretation that satisfies a given Boolean formula.\\\\
+3SAT is a boolean satisfiability problem where each clause in the formula is limited to at most three literals. For example, $(x_1 \lor x_2 \lor \sim x_3) \land (\sim x_2 \lor x_3 \lor \sim x_4) \land \dots$
+
+\end{document}

@@ -1,0 +1,260 @@
+\documentclass[a4paper]{article}
+
+\input{header}
+
+\title{%
+	CS3230 Chapter 3 - Divide and Conquer \\
+	\large Based on lectures by Chang Ee-Chien
+	\\ Notes taken by Andrew Tan
+	\\ AY18/19 Semester 1
+	\\ }
+
+\author{}
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+
+\begin{center}\begin{minipage}[c]{0.9\textwidth}\centering\footnotesize These notes are not endorsed by the lecturers, and I have modified them (often significantly) after lectures. They are nowhere near accurate representations of what was actually lectured, and in particular, all errors are almost surely mine.\end{minipage}\end{center}
+
+\section {Divide and Conquer}
+"Divide and conquer" denotes a general approach in algorithmic design:
+\begin{itemize}
+	\item[] \textbf{Divide} the problem into a number of sub-problems
+	\item[] \textbf{Conquer} the sub-problems by solving recursively. if the sub-problems become trivial enough, solve them directly.
+	\item[] \textbf{Combine} the solutions to the sub-problems into the solution fro the original problem.
+\end{itemize}
+This chapter will explore several divide-and-conquer algorithms common in computer science.
+
+\section{Merge sort}
+\begin{itemize}
+	\item[] \textbf{Divide}: the n-element sequence to be sorted into two subsequences of $(n/2)$ elements each.
+	\item[] \textbf{Conquer}: Sort the two subsequences recursively.
+	\item[] \textbf{Combine}: Merge the two sorted subsequences to produce the sorted output.
+\end{itemize}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+MergeSort((*$A$*)):
+	if (*$n==1$*) then return
+	Copy the first (*$\lfloor n/2 \rfloor$*) elements of (*$A$*) to array (*$B$*)
+	Copy the remaining (*$\lceil n/2 \rceil$*) elements of (*$A$*) to array (*$C$*)
+	
+	MergeSort((*$B$*))
+	MergeSort((*$C$*))
+	
+	Merge((*$A$*), (*$B$*), (*$C$*))
+\end{lstlisting}
+
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Merge((*$A$*), (*$B$*), (*$C$*)):
+	(*$B[n+1] \leftarrow \infty$*)
+	(*$C[m+1] \leftarrow \infty$*)
+	(*$i \leftarrow 1$*); (*$j \leftarrow 1$*)
+	
+	for (*$k\leftarrow 1$*) to (*$n+m$*)
+		if (*$B[i] < C[j]$*):
+			(*$A[k] \leftarrow B[i]$*)
+			(*$i \leftarrow i + 1$*)
+		else:
+			(*$A[k] \leftarrow C[j]$*)
+			(*$j \leftarrow j + 1$*)
+\end{lstlisting}
+\subsection{Analysis of merge sort}
+Let $T(n)$ be the number of comparisons in the worst case.
+\begin{itemize}
+	\item The divide step takes no comparison
+	\item The two recursive calls of MergeSort take $T(r)$ and $T(n-r)$ comparisons respectively.
+	\item The compine step consists of two parts: Merge on $r$ elements, and merge on $(n-r)$ elements. In total, it takes at most $(r+(n-r))$ comparisons.
+\end{itemize}
+Therefore,
+\begin{center}
+	$T(n) = T(r) + T(n-r) + n$
+\end{center}
+Assuming $n$ is a power of 2, thus $r=n/2$. So we have the following recurrence equation:
+\begin{center}
+	$T(n) = 2T(n/2) + n$
+	$T(1) = 0$
+\end{center}
+Solving the recurrence equation, we obtain:
+\begin{center}
+	$T(n) \in \Theta(n \log(n))$
+\end{center}
+Hence, the number of comparisons taken by MergeSort is in $\Theta(n \log(n))$
+
+\section{Quick sort}
+\begin{itemize}
+	\item[] \textbf{Divide}: Picks a "pivot" and rearranges the array so that
+	\begin{itemize}
+		\item all elements to the left of the pivot are smaller or equal to the pivot.
+		\item all elements to the right of the pivot are larger than the pivot
+	\end{itemize}
+	\item[] \textbf{Conquer}: Recursively quicksort the left and right subarrays
+	\item[] \textbf{Combine}: Return the sorted array.
+\end{itemize}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+QuickSort((*$A$*), (*$p$*), (*$r$*)):
+	if (*$p<r$*):
+		(*$j\leftarrow$*) partition((*$A$*), (*$p$*), (*$r$*))
+		QuickSort((*$A$*), (*$p$*), (*$j-1$*))
+		QuickSort((*$A$*), (*$j+1$*), (*$r$*))
+\end{lstlisting}
+We can easily partition the array by using an algorithm that scans from left to right:
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Partition((*$A$*), (*$p$*), (*$r$*)):
+	(*$x \leftarrow A[r]$*); (*$i \leftarrow p-1$*)
+	for (*$j \leftarrow p$*) to (*$r-1$*):
+		if (*$A[j] \le x$*):
+			(*$i \leftarrow i + 1$*)
+			swap ((*$A[i]$*), (*$A[j]$*))
+	swap ((*$A[i+1]$*), (*$A[r]$*))
+	return ((*$i+1$*))
+\end{lstlisting}
+\subsection{Analysis of quick sort}
+For the partition function:
+\begin{itemize}
+	\item The number of comparisons taken by Partition is $(r-p)$
+	\item The number of swaps is $\le (r-p+1)$
+	\item The running time is in $\Theta(r-p)$
+\end{itemize}
+In the best or worst case, the running time is in $\Theta(r-p)$. Since the input size is $(r-p+1)$, partition is a linear time algorithm.
+\subsubsection{Worst case analysis}
+Consider an inpput instance where the elements are already sorted. Let $T_1(n)$ be the time taken where the input is sorted.\\
+For such input, after partition, the size of one subproblem is $(n-1)$ and the other is $0$.\\
+Hence, 
+\begin{center}
+	$T_1(n) = T_1(n-1) + T_1(0) + n$
+\end{center}
+Solving the recurrence equation, we obtain $T_0(n) \in \Theta(n^2)$.\\ \\
+As every element can only be the pivot at most once, there are at most $n$ pivots, and for every pivot, at most $n$ comparisons and $n$ swaps are required. Hence the worst case running time is indeed in $\Theta(n^2)$.
+\subsubsection{Best case analysis}
+Let $T_2(n)$ be the best case,
+\begin{center}
+	$T_2(n) = \min\limits_{0<r \le n}\{T_2(n-r) + T_2(r-1)\} + n$
+\end{center}
+The minimum occurs at the halfway mark, i.e. $r=n/2$. The proof for this is left as an exercise for the reader.\\
+By simplifying the equation further by ignoring the rounding of $n/2$ and the difference in size of the two halves (assuming the size of the array is not a power of 2), we obtain
+\begin{center}
+	$T_2(n) = 2T_2(n/2) + n$
+\end{center}
+And solving the recurrence equation, we have
+\begin{center}
+	$T_2(n) \in \Theta(n \log(n))$
+\end{center}
+\subsubsection{Average case analysis}
+We assume that all permutations of the input are equally likely.\\ \\
+Let $T_3(n)$ be the average number of comparisons.\\
+$T_3(n) = (1/n)(T_3(0) + T_3(n-1) + (n-1))$\\$
+\tab + (1/n) (T_3(1) + T_3(n-2) + (n-1))$\\$
+\tab + (1/n) (T_3(2) + T_3(n-3) + (n-1))$\\$
+\tab\dots $\\$
+\tab + (1/n) (T_3(n-1) + T_3(0) + (n-1))$\\$
+\tab= (1/n)\{\sum\limits_{i=0}^{n-1}T_3(i) + T_3(n-i) + (n-1)\}$\\
+$T_3(1) = 0$\\
+$T_3(0) = 0$\\
+\\From this recurrence equation, we will be able to solve it to obtain 
+\begin{center}
+	$T_3(n) \in \Theta(n \log(n))$
+\end{center}
+The average case analysis assumes that the probability that the pivot is the $i^{th}$ smallest is $(1/n)$, regardless of the value of $i$.\\ Further proof of the solution to the recurrence equation is described in the appendix.
+\subsection{Randomized quicksort}
+A \textbf{randomized algorithm} has access to an additional stream of random numbers, and the output is computed based on both the input and the stream of random numbers.\\
+So on the same input, the output could be different.\\
+\\ For randomized quicksort with an input array $A$, the algorithm randomly and uniformly picks an $r$ from $\{1, 2,..., n\}$, partitions $A$ with $A[r]$ as the pivot, and recusively sorts both halfs of $A$.\\
+\\For a deterministic algorithm, its average running time is the average over the input distribution. If the algorithm performs poorly on a particular input, its running time on that input is always poor.\\
+Now consider a randomized algorithm. Its \textit{expected} running time is the "average" over the choice of random numbers used by the randomized algorithm. For a same input, the running time is probabilistic. Hence, the expected running time for certain probabilistic algorithms would be the same for all input instances of the same size.
+\subsubsection{Expected running time}
+Let $T(n)$ be the random variable for the running time on an input of size $n$.\\
+Let $X_k = 1$ if the pivot is the $k^{th}$ smallest, and $X_k = 0$ otherwise.\\
+Since the pivot is randomly chosen, $Pr(X_k=1) = 1/n$ for ny $k$.\\ \\
+Note that,\\
+$T(n) = T(0) + T(n-1) + n$ $\tab$ if $X_1 = 1$\\
+$T(n) = T(1) + T(n-2) + n$ $\tab$ if $X_2 = 1$\\
+$\dots$\\
+So,\\
+$E(T(n)) = Pr(X_1=1) \{E(T(0)) + E(T(n-1)) + n\}\\
+\tab + Pr(X_2=1) \{E(T(1)) + E(T(n-2)) + n\}\\
+\tab + \dots$\\ \\
+We use the linearity of expectation and the fact that the $X_i$'s are independent from other random variables to derive the above statements.\\
+Solving the above, we obtain
+\begin{center}
+	$E(T(n)) \in \Theta(n\log(n))$
+\end{center}
+Hence, the expected running time taken by randomized quicksort is in $\Theta(n \log(n))$.\\
+
+\section{Matric multiplication}
+Given two $n$ by $n$ matrices $A$ and $B$, we would like to find $C=AB$.\\
+\\A straightforward algorithm that multiples 2 matrices $A$ and $B$ would simply be:
+\begin{lstlisting}[escapeinside={(*}{*)}]
+Multiply((*$A$*), (*$B$*), (*$C$*)):
+	for (*$i \leftarrow 1$*) to (*$n$*):
+		for (*$j \leftarrow 1$*) to (*$n$*):
+			(*$temp \leftarrow 0$*);
+			for (*$k \leftarrow 1$*) to (*$n$*):
+				(*$temp \leftarrow temp + A[i,k]*B[k,j]$*)
+			(*$C[i,j] \leftarrow temp$*)
+\end{lstlisting}
+The number of multiplications is in $n^3$, and the number of additions is in $n^3$.\\
+\\ We can use a divide and conquer algorithm to reduce the number of additions:\\
+Divide each $A$, $B$, and $C$ into 4 sub-matrices
+\[
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+\begin{bmatrix}
+e & f \\
+g & h
+\end{bmatrix}
+=
+\begin{bmatrix}
+r & s \\
+t & u
+\end{bmatrix}
+\]
+Thus we obtain:
+\begin{itemize}
+	\item[] $r=ae+bf$
+	\item[] $s=ag+bh$
+	\item[] $t=ce+df$
+	\item[] $u=cg+dh$
+\end{itemize}
+And the above takes 8 matrix multiplications and 4 matrix additions.\\
+After obtaining the following recurrence relation:
+\begin{center}
+	$T(n) = 8T(n/2)$\\
+	$T(2) = 8$
+\end{center}
+We obtain $T(n) = n^3$\\
+\\There are other methods that manage to reduce the number of matrix multiplications at each dividing step, and the best \textit{lower bound} known is in $\Omega(n^2)$, that is, all methods must take $\Omega(n^2)$ multiplications.
+\appendix
+\section{Linearity of expectation}
+For any random variables $X_1, X_2,$ and constants $\alpha, \beta$,
+\begin{center}
+	$E(\alpha X_1 + \beta X_2) = \alpha E(X_1) + \beta E(X_2)$
+\end{center}
+The above always holds even when $X_1$ and $X_2$ are not independent.
+\section{Proof of the average running time of quicksort}
+Because of the symmetry $T_3(i) = T_3(n-i)$ for any $i$, \\
+$T_3(n) = (1/n) \sum\limits_{i=0}^{n-1} \{
+T_3(i) + T_3(n-i) + (n-1)\}$\\
+ $\tab$ $(2/n) \sum\limits_{i=0}^{n-1} \{
+T_3(i) + (n-1)/2\}$\\ \\
+Now,\\
+$nT_3(n) - (n-1) T_3(n-1)$\\
+$ = 2\sum\limits_{i=0}^{n-1} \{T_3(i) + (n-1)/2\} - 2\sum\limits_{i=0}^{n-2} \{T_3(i) + (n-2)/2\}$\\
+$= 2\{T_3(n-1) + (n-1)/2 + (n-1)/2\}$\\ \\
+$T_3(n)/(n+1) = T_3(n-1)/n + 2(n-1)/(n(n+1))$\\
+$T_3(n)/(n+1) = T_3(n-1)/n + 2/(n+1) - 2/(n^2 + n)$\\ \\
+Let $G(n) = T_3(n)/(n+1)$,\\
+Thus, we have \\
+$G(n) = G(n-1) + 2/(n+1) - 2/(n^2 + n)$\\
+$G(0)=G(1)=0$\\ \\
+$G(n) = G(1) + \sum\limits_{k=2}^{k} (2/(k+1) - 2/(k^2 + k))$\\
+As $1+\frac{1}{2} + \frac{1}{3} + \dots + \frac{1}{k} \approx \ln(k)$,
+\begin{center}
+	$G(n) \approx 2\ln(n)$
+\end{center}
+Thus,
+\begin{center}
+	$T_3(n) \in \Theta(n\log(n))$
+\end{center}
+\end{document}

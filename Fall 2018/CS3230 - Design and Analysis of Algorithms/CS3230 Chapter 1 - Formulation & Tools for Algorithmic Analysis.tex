@@ -30,9 +30,9 @@ Let $f(n)$ and $g(n)$ be functions on $\Z_{+}$. We say that $f(n) \in \Omega(g(n
 \begin{center} $\Omega(g(n)) = \{f(n): \exists c>0$ and $n_0>0$ such that \\$\forall n>n_0, f(n) \ge cg(n)\}$ \end{center}
 
 \subsection{Big-Theta Notation}
-Let $f(n)$ and $g(n)$ be functions on $\Z_{+}$. We say that $f(n) \in \Theta(g(n))$ if $f(n) \in O(g(n))$ and $f(n) \in \Omega(g(n)) O(f(n))$
+Let $f(n)$ and $g(n)$ be functions on $\Z_{+}$. We say that $f(n) \in \Theta(g(n))$ if $f(n) \in O(g(n))$ and $f(n) \in \Omega(g(n))$. More formally,
 
-\begin{center} $\Theta(f(n)) \equiv O(f(n))\cap \Omega(f(n))$ \end{center}
+\begin{center} $\Theta(g(n)) = \{f(n)$ : there exist positive constants $c_1, c_2, n_0$ such that\\ $0 \le c_1g(n) \le f(n) \le c_2g(n)$ for all $n \ge n_0\}$ \end{center}
 
 \subsection{Proving asymptotic bounds}
 \textbf{Lemma 1.}\\
